@@ -12,26 +12,27 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
                     <SolidColorBrush x:Key="AppHeaderBg" Color="#1F1F1F" />
                     <SolidColorBrush x:Key="AppCardBg" Color="#262626" />
                     <SolidColorBrush x:Key="AppCardBorder" Color="#3D3D3D" />
                     <SolidColorBrush x:Key="AppHeroBg" Color="#103F66" />
                     <SolidColorBrush x:Key="AppTagBg" Color="#383838" />
-                    <SolidColorBrush x:Key="AppAccent" Color="#0078D7" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="#FFFFFF" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="#CCCCCC" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="#8A8A8A" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
                 </ResourceDictionary>
+
                 <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
                     <SolidColorBrush x:Key="AppHeaderBg" Color="#F2F2F2" />
                     <SolidColorBrush x:Key="AppCardBg" Color="#FFFFFF" />
                     <SolidColorBrush x:Key="AppCardBorder" Color="#E5E5E5" />
                     <SolidColorBrush x:Key="AppHeroBg" Color="#CCE4F7" />
                     <SolidColorBrush x:Key="AppTagBg" Color="#E6E6E6" />
-                    <SolidColorBrush x:Key="AppAccent" Color="#005A9E" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="#000000" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="#505050" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="#767676" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -358,7 +359,7 @@
                                        FontWeight="SemiBold" 
                                        FontSize="14" 
                                        Foreground="{ThemeResource AppTextPrimary}" />
-                            <TextBlock Text="You must be logged into your Prism Store account to post ratings and feedback." 
+                            <TextBlock Text="You must be logged into your PrismStore account to post ratings and feedback." 
                                        FontFamily="Segoe UI" 
                                        FontWeight="Light" 
                                        FontSize="12" 

@@ -146,6 +146,7 @@
     <Compile Include="Services\DownloadHistoryService.cs" />
     <Compile Include="Services\PrismStoreService.cs" />
     <Compile Include="Services\ReviewService.cs" />
+    <Compile Include="Services\ToastService.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

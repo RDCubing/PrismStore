@@ -13,28 +13,29 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="AppHeaderBg" Color="#1F1F1F" />
-                    <SolidColorBrush x:Key="AppSidebarBg" Color="#171717" />
-                    <SolidColorBrush x:Key="AppCardBg" Color="#262626" />
-                    <SolidColorBrush x:Key="AppCardBorder" Color="#3D3D3D" />
-                    <SolidColorBrush x:Key="AppHeroBg" Color="#103F66" />
-                    <SolidColorBrush x:Key="AppTagBg" Color="#383838" />
-                    <SolidColorBrush x:Key="AppAccent" Color="#0078D7" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="#FFFFFF" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="#CCCCCC" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="#8A8A8A" />
+                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppHeaderBg" Color="{ThemeResource SystemAltHighColor}" />
+                    <SolidColorBrush x:Key="AppSidebarBg" Color="{ThemeResource SystemChromeMediumColor}" />
+                    <SolidColorBrush x:Key="AppCardBg" Color="{ThemeResource SystemListLowColor}" />
+                    <SolidColorBrush x:Key="AppCardBorder" Color="{ThemeResource SystemChromeHighColor}" />
+                    <SolidColorBrush x:Key="AppHeroBg" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppTagBg" Color="{ThemeResource SystemListMediumColor}" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
                 </ResourceDictionary>
+
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="AppHeaderBg" Color="#F2F2F2" />
-                    <SolidColorBrush x:Key="AppSidebarBg" Color="#EAEAEA" />
-                    <SolidColorBrush x:Key="AppCardBg" Color="#FFFFFF" />
-                    <SolidColorBrush x:Key="AppCardBorder" Color="#E5E5E5" />
-                    <SolidColorBrush x:Key="AppHeroBg" Color="#CCE4F7" />
-                    <SolidColorBrush x:Key="AppTagBg" Color="#E6E6E6" />
-                    <SolidColorBrush x:Key="AppAccent" Color="#005A9E" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="#000000" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="#505050" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="#767676" />
+                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppHeaderBg" Color="{ThemeResource SystemAltHighColor}" />
+                    <SolidColorBrush x:Key="AppSidebarBg" Color="{ThemeResource SystemChromeMediumColor}" />
+                    <SolidColorBrush x:Key="AppCardBg" Color="{ThemeResource SystemListLowColor}" />
+                    <SolidColorBrush x:Key="AppCardBorder" Color="{ThemeResource SystemChromeHighColor}" />
+                    <SolidColorBrush x:Key="AppHeroBg" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppTagBg" Color="{ThemeResource SystemListMediumColor}" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
@@ -268,17 +269,17 @@
                         <StackPanel>
                             <!-- EDGE-TO-EDGE ROTATING SPOTLIGHT BANNER -->
                             <Grid x:Name="SpotlightHeroContainer" 
-                                  Height="280" 
-                                  HorizontalAlignment="Stretch"
-                                  Background="#103F66"
-                                  Margin="0,0,0,24"
-                                  Tapped="SpotlightBanner_Tapped">
+      Height="280" 
+      HorizontalAlignment="Stretch"
+      Background="{ThemeResource AppHeroBg}"
+      Margin="0,0,0,24"
+      Tapped="SpotlightBanner_Tapped">
 
                                 <Image x:Name="SpotlightHeroImage" 
-                                       Stretch="UniformToFill" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center" 
-                                       Opacity="0.45" />
+           Stretch="UniformToFill" 
+           HorizontalAlignment="Center" 
+           VerticalAlignment="Center" 
+           Opacity="0.45" />
 
                                 <Grid Background="#40000000" />
                                 <Grid>
@@ -293,40 +294,40 @@
                                 <Grid Padding="28,24,28,20">
                                     <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="680">
                                         <Border Background="{ThemeResource AppAccent}" 
-                                                HorizontalAlignment="Left" 
-                                                Padding="8,3" 
-                                                Margin="0,0,0,10">
+                    HorizontalAlignment="Left" 
+                    Padding="8,3" 
+                    Margin="0,0,0,10">
                                             <TextBlock Text="FEATURED SPOTLIGHT" 
-                                                       FontSize="11" 
-                                                       FontFamily="Segoe UI" 
-                                                       FontWeight="SemiBold" 
-                                                       Foreground="White"/>
+                           FontSize="11" 
+                           FontFamily="Segoe UI" 
+                           FontWeight="SemiBold" 
+                           Foreground="White"/>
                                         </Border>
 
                                         <TextBlock x:Name="SpotlightTitleText" 
-                                                   Text="Welcome to Prism Store" 
-                                                   FontFamily="Segoe UI" 
-                                                   FontWeight="Light" 
-                                                   FontSize="30" 
-                                                   Foreground="#FFFFFF" 
-                                                   TextTrimming="CharacterEllipsis"/>
+                       Text="Welcome to PrismStore" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Light" 
+                       FontSize="30" 
+                       Foreground="White" 
+                       TextTrimming="CharacterEllipsis"/>
 
                                         <TextBlock x:Name="SpotlightSubtitleText" 
-                                                   Text="Browse top featured apps, Windows 10 UWP packages, and classic software." 
-                                                   FontFamily="Segoe UI" 
-                                                   FontWeight="Normal" 
-                                                   FontSize="14" 
-                                                   Foreground="#E0E0E0" 
-                                                   TextTrimming="CharacterEllipsis" 
-                                                   Margin="0,4,0,0"/>
+                       Text="Browse top featured apps, Windows 10 UWP packages, and classic software." 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="14" 
+                       Foreground="White" 
+                       TextTrimming="CharacterEllipsis" 
+                       Margin="0,4,0,0"/>
                                     </StackPanel>
 
                                     <!-- Carousel Navigation Dots -->
                                     <StackPanel x:Name="SpotlightDotsPanel" 
-                                                Orientation="Horizontal" 
-                                                HorizontalAlignment="Right" 
-                                                VerticalAlignment="Bottom" 
-                                                Margin="0,0,8,4"/>
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Bottom" 
+                    Margin="0,0,8,4"/>
                                 </Grid>
                             </Grid>
 
@@ -830,7 +831,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                        <TextBlock Text="Prism Store Client" 
+                                        <TextBlock Text="PrismStore Client" 
                                                    FontFamily="Segoe UI" 
                                                    FontWeight="SemiBold" 
                                                    FontSize="16" 
@@ -890,7 +891,7 @@
                                            Stretch="Uniform" 
                                            Margin="0,0,0,16"/>
 
-                                    <TextBlock Text="Prism Store (version 1.0.26240.0)" 
+                                    <TextBlock Text="PrismStore (version 1.0.26240.1)" 
                                                FontFamily="Segoe UI" 
                                                FontWeight="Bold" 
                                                FontSize="16" 

@@ -212,6 +212,9 @@ namespace PrismStore
             if (_currentApp == null || string.IsNullOrEmpty(_currentApp.DownloadUrl))
                 return;
 
+            // ✅ Notification: download started
+            ToastService.Show("Download started", _currentApp.Title, _currentApp.ImagePath);
+
             DownloadProgressRing.Visibility = Visibility.Visible;
             DownloadProgressRing.IsActive = true;
             DownloadProgressPanel.Visibility = Visibility.Visible;
@@ -237,6 +240,10 @@ namespace PrismStore
                 });
 
                 await DownloadFileAsync(uri, file);
+
+                // ✅ Notification: download completed
+                ToastService.Show("Download complete", _currentApp.Title, _currentApp.ImagePath);
+
                 await Launcher.LaunchFileAsync(file);
             }
             catch (Exception ex)
@@ -255,6 +262,9 @@ namespace PrismStore
         {
             if (_currentApp == null || string.IsNullOrEmpty(_currentApp.DownloadUrl))
                 return;
+
+            // ✅ Notification: download started
+            ToastService.Show("Download started", _currentApp.Title, _currentApp.ImagePath);
 
             // 1. Create the download record
             var downloadEntry = new DownloadItem
@@ -298,6 +308,9 @@ namespace PrismStore
 
                 await DownloadFileAsync(uri, file);
 
+                // ✅ Notification: download completed
+                ToastService.Show("Download complete", _currentApp.Title, _currentApp.ImagePath);
+
                 var dialog = new MessageDialog($"\"{file.Name}\" downloaded successfully.", "Download Complete");
                 dialog.Commands.Add(new UICommand("Open", async _ => await Launcher.LaunchFileAsync(file)));
                 dialog.Commands.Add(new UICommand("Close"));
@@ -305,6 +318,7 @@ namespace PrismStore
             }
             catch (Exception ex)
             {
+                ToastService.Show("Download Failed", ex.Message);
                 await new MessageDialog(ex.Message, "Error").ShowAsync();
             }
             finally

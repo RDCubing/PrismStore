@@ -117,11 +117,17 @@ namespace PrismStore.Services
                 if (file == null)
                     return;
 
+                // ✅ Notification: download started
+                ToastService.Show("Download started", update.Name ?? "Prism Store Update", "ms-appx:///Assets/PrismStore.png");
+
                 using (HttpClient client = new HttpClient())
                 {
                     var buffer = await client.GetBufferAsync(uri);
                     await FileIO.WriteBufferAsync(file, buffer);
                 }
+
+                // ✅ Notification: download completed
+                ToastService.Show("Download complete", update.Name ?? "Prism Store Update", "ms-appx:///Assets/PrismStore.png");
 
                 MessageDialog installDialog = new MessageDialog(
                     $"\"{file.Name}\" has downloaded successfully. Launch package installer now?",
@@ -131,14 +137,15 @@ namespace PrismStore.Services
                 {
                     await Launcher.LaunchFileAsync(file);
                 }));
-            installDialog.Commands.Add(new UICommand("Later"));
+                installDialog.Commands.Add(new UICommand("Later"));
 
-            await installDialog.ShowAsync();
+                await installDialog.ShowAsync();
             }
             catch (Exception ex)
             {
+                ToastService.Show("Download Failed", ex.Message);
                 await new MessageDialog(ex.Message, "Update Installation Error").ShowAsync();
-    }
-}
+            }
+        }
     }
 }
