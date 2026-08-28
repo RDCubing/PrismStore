@@ -891,7 +891,7 @@
                                            Stretch="Uniform" 
                                            Margin="0,0,0,16"/>
 
-                                    <TextBlock Text="PrismStore (version 1.0.26240.1)" 
+                                    <TextBlock Text="PrismStore (version 1.0.26240.2)" 
                                                FontFamily="Segoe UI" 
                                                FontWeight="Bold" 
                                                FontSize="16" 
