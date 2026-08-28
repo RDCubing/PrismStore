@@ -39,75 +39,55 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <!-- Flat Solid Square App Tile DataTemplate (Fixed Dimensions) -->
+            <!-- CLASSIC WINDOWS STORE MINIMAL TILE -->
             <DataTemplate x:Key="SquareAppTemplate">
-                <Grid Width="170" 
-                      Height="250"
-                      Margin="6" 
-                      Background="{ThemeResource AppCardBg}" 
-                      BorderBrush="{ThemeResource AppCardBorder}" 
-                      BorderThickness="1"
-                      Opacity="0"
-                      RenderTransformOrigin="0.5,0.5"
-                      Loaded="AppTile_Loaded">
+                <Grid Width="125" 
+          Margin="8"
+          Background="Transparent"
+          Opacity="0"
+          RenderTransformOrigin="0.5,0.5"
+          Loaded="AppTile_Loaded">
+
                     <Grid.RenderTransform>
                         <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
                     </Grid.RenderTransform>
 
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="140" />
-                        <RowDefinition Height="*" />
+                        <!-- 1:1 Square Icon/Artwork -->
+                        <RowDefinition Height="125" />
+                        <!-- Title & Publisher Text -->
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- 1:1 Aspect Artwork -->
-                    <Grid Grid.Row="0" Background="{ThemeResource SystemAccentColor}">
+                    <!-- 1:1 Square Artwork Container -->
+                    <Grid Grid.Row="0" Background="{ThemeResource AppHeroBg}">
                         <Image Source="{Binding ImagePath}" 
-                               Stretch="UniformToFill" 
-                               HorizontalAlignment="Center" 
-                               VerticalAlignment="Center" />
+                   Stretch="UniformToFill" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" />
                     </Grid>
 
-                    <!-- Metadata Section -->
-                    <Grid Grid.Row="1" Padding="8,6,8,8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                    <!-- Metadata Section (Title + Publisher) -->
+                    <StackPanel Grid.Row="1" Margin="0,8,0,0">
+                        <!-- Title (e.g. Facebook) -->
+                        <TextBlock Text="{Binding Title}" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="14" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       TextTrimming="CharacterEllipsis" 
+                       MaxLines="1" />
 
-                        <TextBlock Grid.Row="0"
-                                   Text="{Binding Title}" 
-                                   FontFamily="Segoe UI" 
-                                   FontWeight="SemiBold" 
-                                   FontSize="14" 
-                                   Foreground="{ThemeResource AppTextPrimary}" 
-                                   TextTrimming="CharacterEllipsis" />
-
-                        <TextBlock Grid.Row="1"
-                                   Text="{Binding Subtitle}" 
-                                   FontFamily="Segoe UI" 
-                                   FontWeight="Normal" 
-                                   FontSize="11" 
-                                   Foreground="{ThemeResource AppTextSecondary}" 
-                                   TextTrimming="CharacterEllipsis" 
-                                   Margin="0,2,0,0" />
-
-                        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,4,0,0">
-                            <Border Background="{ThemeResource AppTagBg}" Padding="4,1" Margin="0,0,5,0">
-                                <TextBlock Text="{Binding Framework}" 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="SemiBold" 
-                                           FontSize="9" 
-                                           Foreground="{ThemeResource AppAccent}" />
-                            </Border>
-                            <TextBlock Text="{Binding Version}" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Normal" 
-                                       FontSize="9" 
-                                       Foreground="{ThemeResource AppTextMuted}" 
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </Grid>
+                        <!-- Publisher (e.g. Meta) -->
+                        <TextBlock Text="{Binding Publisher}" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextMuted}" 
+                       TextTrimming="CharacterEllipsis" 
+                       MaxLines="1" 
+                       Margin="0,2,0,0" />
+                    </StackPanel>
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -413,42 +393,44 @@
 
                     <!-- VIEW 3: CATEGORIES CONTAINER -->
                     <Grid x:Name="CategoriesContainer" 
-                          Visibility="Collapsed" 
-                          Padding="24,16,24,40"
-                          RenderTransformOrigin="0.5,0.5">
+      Visibility="Collapsed" 
+      RenderTransformOrigin="0.5,0.5">
                         <Grid.RenderTransform>
                             <CompositeTransform ScaleX="1" ScaleY="1" />
                         </Grid.RenderTransform>
+
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Margin="6,0,0,16">
+                        <!-- Header Section -->
+                        <StackPanel Grid.Row="0" Margin="24,16,24,16">
                             <TextBlock Text="Categories" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="28" 
-                                       Foreground="{ThemeResource AppTextPrimary}" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Light" 
+                   FontSize="28" 
+                   Foreground="{ThemeResource AppTextPrimary}" />
                             <TextBlock x:Name="CategorySubheaderText" 
-                                       Text="Browse apps and games by category." 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="13" 
-                                       Foreground="{ThemeResource AppTextMuted}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,2,0,0" />
+                   Text="Browse apps and games by category." 
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="13" 
+                   Foreground="{ThemeResource AppTextMuted}" 
+                   TextWrapping="Wrap"
+                   Margin="0,2,0,0" />
                         </StackPanel>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="6,0,0,20">
+                        <!-- Filter Section -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="24,0,24,16">
                             <ComboBox x:Name="CategoryComboBox" 
-                                      Header="Category"
-                                      MinWidth="240"
-                                      FontFamily="Segoe UI" 
-                                      FontWeight="Light"
-                                      FontSize="14"
-                                      SelectionChanged="CategoryComboBox_SelectionChanged">
+                  Header="Category"
+                  MinWidth="240"
+                  FontFamily="Segoe UI" 
+                  FontWeight="Normal"
+                  FontSize="14"
+                  SelectionChanged="CategoryComboBox_SelectionChanged">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -460,48 +442,54 @@
                             </ComboBox>
                         </StackPanel>
 
+                        <!-- Content Grid Area -->
                         <Grid Grid.Row="2">
+                            <!-- GridView with Edge-Pinned Scrollbar and Zero-Padding Container Style -->
                             <GridView x:Name="CategoryAppsGridView" 
-                                      SelectionMode="None" 
-                                      IsItemClickEnabled="True" 
-                                      ItemClick="AppItem_Click" 
-                                      ItemTemplate="{StaticResource SquareAppTemplate}" />
+                  Padding="24,0,8,40"
+                  SelectionMode="None" 
+                  IsItemClickEnabled="True" 
+                  ItemClick="AppItem_Click" 
+                  ItemTemplate="{StaticResource SquareAppTemplate}">
+                            </GridView>
 
+                            <!-- Empty State Notice -->
                             <StackPanel x:Name="CategoryEmptyStateText" 
-                                        HorizontalAlignment="Center" 
-                                        VerticalAlignment="Center" 
-                                        Visibility="Collapsed" 
-                                        Margin="0,40,0,0">
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Visibility="Collapsed" 
+                    Margin="0,40,0,0">
                                 <FontIcon Glyph="&#xE71D;" 
-                                          FontFamily="Segoe MDL2 Assets" 
-                                          FontSize="42" 
-                                          Foreground="{ThemeResource AppTextMuted}" 
-                                          HorizontalAlignment="Center" 
-                                          Margin="0,0,0,12" />
+                      FontFamily="Segoe MDL2 Assets" 
+                      FontSize="42" 
+                      Foreground="{ThemeResource AppTextMuted}" 
+                      HorizontalAlignment="Center" 
+                      Margin="0,0,0,12" />
                                 <TextBlock Text="No apps found in this category" 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="Light" 
-                                           FontSize="18" 
-                                           Foreground="{ThemeResource AppTextPrimary}" 
-                                           TextWrapping="Wrap"
-                                           HorizontalAlignment="Center" />
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="18" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center" />
                                 <TextBlock Text="Check back later for newly added packages." 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="Light" 
-                                           FontSize="13" 
-                                           Foreground="{ThemeResource AppTextMuted}" 
-                                           TextWrapping="Wrap"
-                                           HorizontalAlignment="Center" 
-                                           Margin="0,4,0,0" />
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="13" 
+                       Foreground="{ThemeResource AppTextMuted}" 
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center" 
+                       Margin="0,4,0,0" />
                             </StackPanel>
                         </Grid>
                     </Grid>
 
                     <!-- VIEW 4: DOWNLOADS CONTAINER -->
+                    <!-- VIEW 4: DOWNLOADS CONTAINER (BORDERLESS & NO CARD BACKGROUND) -->
+                    <!-- VIEW 4: DOWNLOADS CONTAINER (EDGE-ALIGNED SCROLLBAR & BORDERLESS CLASSIC LAYOUT) -->
                     <Grid x:Name="DownloadsContainer" 
-                          Visibility="Collapsed" 
-                          Padding="32,24,32,40"
-                          RenderTransformOrigin="0.5,0.5">
+      Visibility="Collapsed" 
+      RenderTransformOrigin="0.5,0.5">
                         <Grid.RenderTransform>
                             <CompositeTransform ScaleX="1" ScaleY="1" />
                         </Grid.RenderTransform>
@@ -512,486 +500,702 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+                        <!-- Header Section -->
+                        <StackPanel Grid.Row="0" Margin="32,24,32,12">
                             <TextBlock Text="Downloads" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="28" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,0,0,6" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Light" 
+                   FontSize="28" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,4" />
 
                             <TextBlock Text="Your recent downloads and installation history appear here." 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="14" 
-                                       Foreground="{ThemeResource AppTextSecondary}" 
-                                       TextWrapping="Wrap" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="13" 
+                   Foreground="{ThemeResource AppTextMuted}" 
+                   TextWrapping="Wrap" />
                         </StackPanel>
 
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,18">
+                        <!-- Toolbar Action Button -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="32,0,32,18">
                             <Button x:Name="ClearDownloadsHistoryButton" 
-                                    Content="Clear history" 
-                                    Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="16,6" 
-                                    Click="ClearDownloadsHistory_Click" />
+                Content="Clear history" 
+                Background="{ThemeResource AppCardBg}" 
+                BorderBrush="{ThemeResource AppCardBorder}" 
+                BorderThickness="1" 
+                FontFamily="Segoe UI"
+                FontSize="13"
+                Padding="16,6" 
+                Click="ClearDownloadsHistory_Click" />
                         </StackPanel>
 
-                        <Grid Grid.Row="2" MaxWidth="900" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <!-- History List View Area -->
+                        <Grid Grid.Row="2">
+                            <!-- ListView stretches full width to anchor the scrollbar to the window edge -->
                             <ListView x:Name="DownloadsHistoryListView" 
-                                      SelectionMode="None" 
-                                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                      ScrollViewer.VerticalScrollMode="Auto">
+                  Padding="32,0,0,40"
+                  HorizontalAlignment="Stretch"
+                  SelectionMode="None" 
+                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.VerticalScrollMode="Auto">
+
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0,0,0,14" />
+                                        <Setter Property="MinWidth" Value="0" />
+                                        <Setter Property="MinHeight" Value="0" />
                                     </Style>
                                 </ListView.ItemContainerStyle>
+
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Background="{ThemeResource AppCardBg}" 
-                                                BorderBrush="{ThemeResource AppCardBorder}" 
-                                                BorderThickness="1" 
-                                                Padding="12"
-                                                Margin="0,0,0,8"
-                                                HorizontalAlignment="Stretch">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="52"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
+                                        <!-- Constrain content width here instead of on the ListView -->
+                                        <Grid MaxWidth="800" HorizontalAlignment="Left" Background="Transparent">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="48" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
 
-                                                <Grid Grid.Column="0" Width="48" Height="48" Background="{ThemeResource SystemAccentColor}" VerticalAlignment="Top">
-                                                    <Image Source="{Binding ImagePath}" 
-                                                           Width="48" 
-                                                           Height="48" 
-                                                           Stretch="UniformToFill" 
-                                                           HorizontalAlignment="Center" 
-                                                           VerticalAlignment="Center"/>
-                                                </Grid>
-
-                                                <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Title}" 
-                                                               FontFamily="Segoe UI" 
-                                                               FontWeight="SemiBold" 
-                                                               FontSize="15" 
-                                                               Foreground="{ThemeResource AppTextPrimary}" 
-                                                               TextWrapping="Wrap" />
-                                                    <TextBlock Text="{Binding FileName}" 
-                                                               FontFamily="Segoe UI" 
-                                                               FontSize="12" 
-                                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                                               TextWrapping="Wrap"
-                                                               Margin="0,2,0,0" />
-                                                    <TextBlock Text="{Binding DownloadedAt}" 
-                                                               FontFamily="Segoe UI" 
-                                                               FontSize="11" 
-                                                               Foreground="{ThemeResource AppTextMuted}" 
-                                                               TextWrapping="Wrap"
-                                                               Margin="0,2,0,0" />
-                                                </StackPanel>
+                                            <!-- Icon Artwork (1:1 aspect) -->
+                                            <Grid Grid.Column="0" Width="48" Height="48" Background="{ThemeResource AppHeroBg}" VerticalAlignment="Center">
+                                                <Image Source="{Binding ImagePath}" 
+                                   Width="48" 
+                                   Height="48" 
+                                   Stretch="UniformToFill" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
                                             </Grid>
-                                        </Border>
+
+                                            <!-- App Title & Download Info -->
+                                            <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" 
+                                       FontFamily="Segoe UI" 
+                                       FontWeight="Normal" 
+                                       FontSize="14" 
+                                       Foreground="{ThemeResource AppTextPrimary}" 
+                                       TextWrapping="Wrap" />
+
+                                                <TextBlock Text="{Binding FileName}" 
+                                       FontFamily="Segoe UI" 
+                                       FontSize="12" 
+                                       Foreground="{ThemeResource AppTextMuted}" 
+                                       TextWrapping="Wrap"
+                                       Margin="0,1,0,0" />
+
+                                                <TextBlock Text="{Binding DownloadedAt}" 
+                                       FontFamily="Segoe UI" 
+                                       FontSize="11" 
+                                       Foreground="{ThemeResource AppTextMuted}" 
+                                       TextWrapping="Wrap"
+                                       Margin="0,1,0,0" />
+                                            </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <!-- Empty State Notice -->
-                            <Border x:Name="EmptyDownloadsPanel" 
-                                    Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="32" 
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Top"
-                                    Visibility="Collapsed">
-                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <FontIcon Glyph="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="36" Foreground="{ThemeResource AppTextMuted}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                                    <TextBlock Text="No downloads yet" FontFamily="Segoe UI" FontWeight="Light" FontSize="18" Foreground="{ThemeResource AppTextPrimary}" HorizontalAlignment="Center" TextWrapping="Wrap"/>
-                                    <TextBlock Text="Items downloaded from the store will appear here." FontFamily="Segoe UI" FontWeight="Light" FontSize="13" Foreground="{ThemeResource AppTextMuted}" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Border>
+                            <!-- Empty State View -->
+                            <StackPanel x:Name="EmptyDownloadsPanel" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"
+                    Margin="32,16,32,0"
+                    Visibility="Collapsed">
+                                <FontIcon Glyph="&#xE896;" 
+                      FontFamily="Segoe MDL2 Assets" 
+                      FontSize="36" 
+                      Foreground="{ThemeResource AppTextMuted}" 
+                      HorizontalAlignment="Left" 
+                      Margin="0,0,0,12"/>
+                                <TextBlock Text="No downloads yet" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="16" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap"/>
+                                <TextBlock Text="Items downloaded from the store will appear here." 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextMuted}" 
+                       HorizontalAlignment="Left" 
+                       TextWrapping="Wrap" 
+                       Margin="0,2,0,0"/>
+                            </StackPanel>
                         </Grid>
                     </Grid>
 
-                    <!-- VIEW 6: UPLOADER CONTAINER -->
+                    <!-- VIEW 6: UPLOADER CONTAINER (CLASSIC WINDOWS 10 STORE FLAT LAYOUT) -->
                     <ScrollViewer x:Name="UploaderContainer" 
-                                  Visibility="Collapsed" 
-                                  Padding="32,24,32,40"
-                                  RenderTransformOrigin="0.5,0.5">
+              Visibility="Collapsed" 
+              Padding="0"
+              RenderTransformOrigin="0.5,0.5">
                         <ScrollViewer.RenderTransform>
                             <CompositeTransform ScaleX="1" ScaleY="1" />
                         </ScrollViewer.RenderTransform>
-                        <StackPanel MaxWidth="700" HorizontalAlignment="Stretch">
+
+                        <StackPanel MaxWidth="640" HorizontalAlignment="Left" Margin="32,24,32,48">
+
+                            <!-- Page Header -->
                             <TextBlock Text="App Uploader" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="28" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,0,0,8" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Light" 
+                   FontSize="28" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,4" />
 
                             <TextBlock Text="Submit your applications and packages to the catalog." 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="14" 
-                                       Foreground="{ThemeResource AppTextSecondary}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,24" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="13" 
+                   Foreground="{ThemeResource AppTextMuted}" 
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,24" />
 
-                            <!-- Unauthenticated Banner -->
+                            <!-- Unauthenticated Prompt Banner -->
                             <Border x:Name="UploaderAuthRequiredPanel" 
-                                    Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="24" 
-                                    Margin="0,0,0,24"
-                                    Visibility="Collapsed">
-                                <StackPanel>
-                                    <TextBlock Text="SIGN IN REQUIRED" 
-                                               FontFamily="Segoe UI Light" 
-                                               FontSize="24" 
-                                               Foreground="{ThemeResource AppTextPrimary}"
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,8"/>
-                                    <TextBlock Text="Please sign in from the Settings account section to access the submission portal." 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="14" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap" />
-                                </StackPanel>
+                Background="{ThemeResource AppCardBg}" 
+                BorderBrush="{ThemeResource AppCardBorder}" 
+                BorderThickness="1" 
+                Padding="20" 
+                Margin="0,0,0,24"
+                Visibility="Collapsed">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <FontIcon Glyph="&#xE72E;" 
+                          FontFamily="Segoe MDL2 Assets" 
+                          FontSize="24" 
+                          Foreground="{ThemeResource SystemAccentColor}" 
+                          VerticalAlignment="Top" 
+                          Margin="0,2,16,0" />
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Sign in required" 
+                               FontFamily="Segoe UI" 
+                               FontWeight="SemiBold" 
+                               FontSize="16" 
+                               Foreground="{ThemeResource AppTextPrimary}"
+                               TextWrapping="Wrap" />
+
+                                        <TextBlock Text="Please sign in from the Settings account section to access the submission portal." 
+                               FontFamily="Segoe UI" 
+                               FontWeight="Normal" 
+                               FontSize="12" 
+                               Foreground="{ThemeResource AppTextSecondary}" 
+                               TextWrapping="Wrap" 
+                               Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Grid>
                             </Border>
 
                             <!-- Submission Form Panel -->
                             <StackPanel x:Name="UploaderSubmissionFormPanel">
-                                <TextBox x:Name="UploaderTitleBox" Header="Application Title" PlaceholderText="e.g. My Awesome App" MaxLength="100" Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderSubtitleBox" Header="Subtitle" PlaceholderText="Short summary" MaxLength="200" Height="70" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderCategoryBox" Header="Category" PlaceholderText="e.g. Utilities, Games, Media" MaxLength="100" Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderPublisherBox" Header="Publisher" PlaceholderText="e.g. Geek Devs" MaxLength="100" Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderVersionBox" Header="Version" PlaceholderText="e.g. 1.0.0" MaxLength="50" Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderFrameworkBox" Header="Framework / Target OS" PlaceholderText="e.g. UWP, WinUI 3" MaxLength="100" Margin="0,0,0,14"/>
 
-                                <TextBox x:Name="UploaderIconUrlBox" Header="Icon Image URL" PlaceholderText="https://..." Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderScreenshotUrlBox" Header="Screenshot Image URL" PlaceholderText="https://..." Margin="0,0,0,14"/>
-                                <TextBox x:Name="UploaderDownloadUrlBox" Header="Download URL" PlaceholderText="https://..." Margin="0,0,0,14"/>
+                                <!-- App Details Section -->
+                                <TextBlock Text="Package Information" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="18" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       Margin="0,0,0,12" />
 
-                                <TextBox x:Name="UploaderDescriptionBox" Header="Description" AcceptsReturn="True" TextWrapping="Wrap" Height="120" PlaceholderText="Full app details..." MaxLength="5000" Margin="0,0,0,20"/>
+                                <TextBox x:Name="UploaderTitleBox" 
+                     Header="Application title" 
+                     PlaceholderText="e.g. My Awesome App" 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     MaxLength="100" 
+                     Margin="0,0,0,14" />
 
+                                <TextBox x:Name="UploaderSubtitleBox" 
+                     Header="Subtitle" 
+                     PlaceholderText="Short summary" 
+                     MaxLength="200" 
+                     Height="68" 
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     Margin="0,0,0,14" />
+
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="14" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox x:Name="UploaderCategoryBox" 
+                         Grid.Column="0"
+                         Header="Category" 
+                         PlaceholderText="e.g. Utilities, Games" 
+                         FontFamily="Segoe UI" 
+                         FontSize="14" 
+                         MaxLength="100" />
+
+                                    <TextBox x:Name="UploaderPublisherBox" 
+                         Grid.Column="2"
+                         Header="Publisher" 
+                         PlaceholderText="e.g. Geek Devs" 
+                         FontFamily="Segoe UI" 
+                         FontSize="14" 
+                         MaxLength="100" />
+                                </Grid>
+
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="14" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBox x:Name="UploaderVersionBox" 
+                         Grid.Column="0"
+                         Header="Version" 
+                         PlaceholderText="e.g. 1.0.0" 
+                         FontFamily="Segoe UI" 
+                         FontSize="14" 
+                         MaxLength="50" />
+
+                                    <TextBox x:Name="UploaderFrameworkBox" 
+                         Grid.Column="2"
+                         Header="Framework / Target OS" 
+                         PlaceholderText="e.g. UWP, WinUI 3" 
+                         FontFamily="Segoe UI" 
+                         FontSize="14" 
+                         MaxLength="100" />
+                                </Grid>
+
+                                <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,8,0,20" />
+
+                                <!-- Media & Package Links Section -->
+                                <TextBlock Text="Links &amp; Media" 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="18" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       Margin="0,0,0,12" />
+
+                                <TextBox x:Name="UploaderIconUrlBox" 
+                     Header="Icon image URL" 
+                     PlaceholderText="https://..." 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     Margin="0,0,0,14" />
+
+                                <TextBox x:Name="UploaderScreenshotUrlBox" 
+                     Header="Screenshot image URL" 
+                     PlaceholderText="https://..." 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     Margin="0,0,0,14" />
+
+                                <TextBox x:Name="UploaderDownloadUrlBox" 
+                     Header="Download package URL" 
+                     PlaceholderText="https://..." 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     Margin="0,0,0,14" />
+
+                                <TextBox x:Name="UploaderDescriptionBox" 
+                     Header="Description" 
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap" 
+                     Height="120" 
+                     PlaceholderText="Full app details..." 
+                     FontFamily="Segoe UI" 
+                     FontSize="14" 
+                     MaxLength="5000" 
+                     Margin="0,0,0,24" />
+
+                                <!-- Action Button -->
                                 <Button x:Name="UploaderSubmitButton"
-                                        Content="Submit Application"
-                                        Width="220" 
-                                        Background="{ThemeResource AppAccent}" 
-                                        Foreground="White" 
-                                        BorderThickness="0" 
-                                        Height="40" 
-                                        HorizontalAlignment="Right">
+                    Content="Submit application"
+                    Background="{ThemeResource SystemAccentColor}" 
+                    Foreground="White" 
+                    FontFamily="Segoe UI" 
+                    FontWeight="Normal" 
+                    FontSize="13"
+                    Padding="24,7" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Left">
                                     <Button.Flyout>
                                         <Flyout x:Name="UploaderSubmitConfirmFlyout">
                                             <StackPanel Width="280">
-                                                <TextBlock Text="Submit Application?" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8" TextWrapping="Wrap"/>
-                                                <TextBlock Text="Are you sure you want to submit this app for review? Please ensure all URLs and details are correct." TextWrapping="Wrap" Margin="0,0,0,16"/>
+                                                <TextBlock Text="Submit Application?" 
+                                       FontFamily="Segoe UI" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{ThemeResource AppTextPrimary}"
+                                       Margin="0,0,0,6" 
+                                       TextWrapping="Wrap"/>
+
+                                                <TextBlock Text="Are you sure you want to submit this app for review? Please ensure all URLs and details are correct." 
+                                       FontFamily="Segoe UI" 
+                                       FontSize="12" 
+                                       Foreground="{ThemeResource AppTextSecondary}"
+                                       TextWrapping="Wrap" 
+                                       Margin="0,0,0,16"/>
+
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="10"/>
-                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="10" />
+                                                        <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <Button Grid.Column="0" Content="Yes, Submit" HorizontalAlignment="Stretch" Click="UploaderConfirmSubmit_Click"/>
-                                                    <Button Grid.Column="2" Content="Cancel" HorizontalAlignment="Stretch" Click="UploaderCancelSubmit_Click"/>
+                                                    <Button Grid.Column="0" 
+                                        Content="Yes, submit" 
+                                        Background="{ThemeResource SystemAccentColor}" 
+                                        Foreground="White" 
+                                        FontFamily="Segoe UI" 
+                                        FontSize="12"
+                                        BorderThickness="0"
+                                        HorizontalAlignment="Stretch" 
+                                        Click="UploaderConfirmSubmit_Click"/>
+                                                    <Button Grid.Column="2" 
+                                        Content="Cancel" 
+                                        Background="{ThemeResource AppCardBg}" 
+                                        BorderBrush="{ThemeResource AppCardBorder}" 
+                                        BorderThickness="1"
+                                        FontFamily="Segoe UI" 
+                                        FontSize="12"
+                                        HorizontalAlignment="Stretch" 
+                                        Click="UploaderCancelSubmit_Click"/>
                                                 </Grid>
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
+
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- VIEW 5: INTEGRATED SETTINGS -->
+                    <!-- VIEW 5: INTEGRATED SETTINGS (CLASSIC WINDOWS 10 STORE 1507 / BUILD 10240 FLAT LAYOUT) -->
                     <ScrollViewer x:Name="SettingsContainer" 
-                                  Visibility="Collapsed" 
-                                  Padding="32,24,32,40"
-                                  RenderTransformOrigin="0.5,0.5">
+              Visibility="Collapsed" 
+              Padding="0"
+              RenderTransformOrigin="0.5,0.5">
                         <ScrollViewer.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
+                            <CompositeTransform ScaleX="1" ScaleY="1"/>
                         </ScrollViewer.RenderTransform>
-                        <StackPanel MaxWidth="850" HorizontalAlignment="Stretch">
+
+                        <StackPanel MaxWidth="720" HorizontalAlignment="Left" Margin="32,24,32,48">
+
+                            <!-- Page Header -->
                             <TextBlock Text="Settings" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="28" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,0,0,8" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Light" 
+                   FontSize="28" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,4" />
 
                             <TextBlock Text="Manage your store account, client updates, and application details." 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="14" 
-                                       Foreground="{ThemeResource AppTextSecondary}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,24" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="13" 
+                   Foreground="{ThemeResource AppTextMuted}" 
+                   TextWrapping="Wrap"
+                   Margin="0,0,0,28" />
 
-                            <!-- SECTION 1: ACCOUNT -->
+                            <!-- ========================================== -->
+                            <!-- SECTION 1: ACCOUNT                         -->
+                            <!-- ========================================== -->
                             <TextBlock Text="Account" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="18" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,0,0,10" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="20" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,12" />
 
-                            <!-- Logged In Panel -->
-                            <Border x:Name="LoggedInProfilePanel" 
-                                    Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="24" 
-                                    Margin="0,0,0,24"
-                                    Visibility="Collapsed">
-                                <StackPanel>
+                            <!-- Logged In Profile View -->
+                            <Grid x:Name="LoggedInProfilePanel" 
+              Margin="0,0,0,28" 
+              Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- User Avatar Glyph -->
+                                <Grid Grid.Column="0" Width="48" Height="48" Background="{ThemeResource AppHeroBg}">
+                                    <FontIcon Glyph="&#xE77B;" 
+                          FontFamily="Segoe MDL2 Assets" 
+                          FontSize="22" 
+                          Foreground="White" 
+                          HorizontalAlignment="Center" 
+                          VerticalAlignment="Center" />
+                                </Grid>
+
+                                <!-- User Details -->
+                                <StackPanel Grid.Column="1" Margin="14,0,16,0" VerticalAlignment="Center">
                                     <TextBlock x:Name="AccountUsernameText" 
-                                               Text="Logged in as User" 
-                                               FontFamily="Segoe UI" 
-                                               FontWeight="SemiBold" 
-                                               FontSize="20" 
-                                               Foreground="{ThemeResource AppTextPrimary}" 
-                                               TextWrapping="Wrap" />
+                           Text="Logged in as User" 
+                           FontFamily="Segoe UI" 
+                           FontWeight="SemiBold" 
+                           FontSize="15" 
+                           Foreground="{ThemeResource AppTextPrimary}" 
+                           TextWrapping="Wrap" />
 
                                     <TextBlock x:Name="SessionExpiryStatusText" 
-                                               Text="Session expires in: --:--" 
-                                               FontFamily="Segoe UI" 
-                                               FontWeight="Light" 
-                                               FontSize="13" 
-                                               Foreground="{ThemeResource AppTextMuted}" 
-                                               TextWrapping="Wrap"
-                                               Margin="0,4,0,16" />
-
-                                    <Button Content="Sign Out" 
-                                            Background="#991B1B" 
-                                            Foreground="White" 
-                                            FontFamily="Segoe UI" 
-                                            FontWeight="Light" 
-                                            Padding="20,6" 
-                                            BorderThickness="0" 
-                                            Click="SignOut_Click" />
+                           Text="Session expires in: --:--" 
+                           FontFamily="Segoe UI" 
+                           FontWeight="Normal" 
+                           FontSize="12" 
+                           Foreground="{ThemeResource AppTextMuted}" 
+                           TextWrapping="Wrap"
+                           Margin="0,2,0,0" />
                                 </StackPanel>
-                            </Border>
 
-                            <!-- Logged Out Auth Pivot -->
-                            <StackPanel x:Name="LoggedOutAuthPanel" Margin="0,0,0,24">
-                                <Pivot>
-                                    <PivotItem Header="Sign In">
-                                        <Border Background="{ThemeResource AppCardBg}" 
-                                                BorderBrush="{ThemeResource AppCardBorder}" 
-                                                BorderThickness="1" 
-                                                Padding="24" 
-                                                Margin="0,10,0,0">
-                                            <StackPanel>
-                                                <TextBox x:Name="LoginUsernameBox" Header="Username" Margin="0,0,0,14" />
-                                                <PasswordBox x:Name="LoginPasswordBox" Header="Password" Margin="0,0,0,20" />
-                                                <Button Content="Sign In" 
-                                                        Background="{ThemeResource AppAccent}" 
-                                                        Foreground="White" 
-                                                        FontFamily="Segoe UI" 
-                                                        FontWeight="Light" 
-                                                        Padding="24,7" 
-                                                        BorderThickness="0" 
-                                                        Click="LoginButton_Click" />
-                                            </StackPanel>
-                                        </Border>
+                                <!-- Sign Out Button -->
+                                <Button Grid.Column="2"
+                    Content="Sign out" 
+                    Background="{ThemeResource AppCardBg}" 
+                    Foreground="{ThemeResource AppTextPrimary}" 
+                    BorderBrush="{ThemeResource AppCardBorder}"
+                    BorderThickness="1"
+                    FontFamily="Segoe UI" 
+                    FontWeight="Normal" 
+                    FontSize="12"
+                    Padding="16,6" 
+                    VerticalAlignment="Center"
+                    Click="SignOut_Click" />
+                            </Grid>
+
+                            <!-- Logged Out Sign In / Register Pivot -->
+                            <StackPanel x:Name="LoggedOutAuthPanel" Margin="0,0,0,28">
+                                <Pivot Margin="0,-12,0,0">
+                                    <PivotItem Header="Sign in">
+                                        <StackPanel Width="320" HorizontalAlignment="Left" Margin="0,14,0,0">
+                                            <TextBox x:Name="LoginUsernameBox" 
+                 Header="Username" 
+                 FontFamily="Segoe UI"
+                 FontSize="14"
+                 Margin="0,0,0,14" />
+
+                                            <PasswordBox x:Name="LoginPasswordBox" 
+                     Header="Password" 
+                     FontFamily="Segoe UI"
+                     FontSize="14"
+                     Margin="0,0,0,20" />
+
+                                            <Button Content="Sign in" 
+                Background="{ThemeResource SystemAccentColor}" 
+                Foreground="White" 
+                FontFamily="Segoe UI" 
+                FontWeight="Normal" 
+                FontSize="13" 
+                Padding="28,6" 
+                BorderThickness="0" 
+                HorizontalAlignment="Left"
+                Click="LoginButton_Click" />
+                                        </StackPanel>
                                     </PivotItem>
 
-                                    <PivotItem Header="Create Account">
-                                        <Border Background="{ThemeResource AppCardBg}" 
-                                                BorderBrush="{ThemeResource AppCardBorder}" 
-                                                BorderThickness="1" 
-                                                Padding="24" 
-                                                Margin="0,10,0,0">
-                                            <StackPanel>
-                                                <TextBox x:Name="RegEmailBox" Header="Email" Margin="0,0,0,14" />
-                                                <TextBox x:Name="RegUsernameBox" Header="Username" Margin="0,0,0,14" />
-                                                <PasswordBox x:Name="RegPasswordBox" Header="Password" Margin="0,0,0,14" />
-                                                <PasswordBox x:Name="RegConfirmPasswordBox" Header="Confirm Password" Margin="0,0,0,20" />
-                                                <Button Content="Register Account" 
-                                                        Background="{ThemeResource AppAccent}" 
-                                                        Foreground="White" 
-                                                        FontFamily="Segoe UI" 
-                                                        FontWeight="Light" 
-                                                        Padding="24,7" 
-                                                        BorderThickness="0" 
-                                                        Click="RegisterButton_Click" />
-                                            </StackPanel>
-                                        </Border>
+                                    <PivotItem Header="Create account">
+                                        <StackPanel Width="320" HorizontalAlignment="Left" Margin="0,14,0,0">
+                                            <TextBox x:Name="RegEmailBox" 
+                 Header="Email address" 
+                 FontFamily="Segoe UI"
+                 FontSize="14"
+                 Margin="0,0,0,14" />
+
+                                            <TextBox x:Name="RegUsernameBox" 
+                 Header="Username" 
+                 FontFamily="Segoe UI"
+                 FontSize="14"
+                 Margin="0,0,0,14" />
+
+                                            <PasswordBox x:Name="RegPasswordBox" 
+                     Header="Password" 
+                     FontFamily="Segoe UI"
+                     FontSize="14"
+                     Margin="0,0,0,14" />
+
+                                            <PasswordBox x:Name="RegConfirmPasswordBox" 
+                     Header="Confirm password" 
+                     FontFamily="Segoe UI"
+                     FontSize="14"
+                     Margin="0,0,0,20" />
+
+                                            <Button Content="Register account" 
+                Background="{ThemeResource SystemAccentColor}" 
+                Foreground="White" 
+                FontFamily="Segoe UI" 
+                FontWeight="Normal" 
+                FontSize="13" 
+                Padding="24,6" 
+                BorderThickness="0" 
+                HorizontalAlignment="Left"
+                Click="RegisterButton_Click" />
+                                        </StackPanel>
                                     </PivotItem>
                                 </Pivot>
                             </StackPanel>
 
-                            <!-- SECTION 2: UPDATES -->
-                            <TextBlock Text="Updates" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="18" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,10,0,10" />
+                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
 
-                            <Border Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="22" 
-                                    Margin="0,0,0,24">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+                            <!-- ========================================== -->
+                            <!-- SECTION 2: APP UPDATES                     -->
+                            <!-- ========================================== -->
+                            <TextBlock Text="App updates" 
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="20" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,12" />
 
-                                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,12,0">
-                                        <TextBlock Text="PrismStore Client" 
-                                                   FontFamily="Segoe UI" 
-                                                   FontWeight="SemiBold" 
-                                                   FontSize="16" 
-                                                   Foreground="{ThemeResource AppTextPrimary}" 
-                                                   TextWrapping="Wrap" />
-
-                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                            <ProgressRing x:Name="UpdateProgressRing" 
-                                                          Width="18" 
-                                                          Height="18" 
-                                                          IsActive="False" 
-                                                          Visibility="Collapsed" 
-                                                          Foreground="{ThemeResource AppAccent}" 
-                                                          Margin="0,0,10,0" />
-
-                                            <TextBlock x:Name="UpdateStatusText" 
-                                                       Text="Ready to check for updates." 
-                                                       FontFamily="Segoe UI" 
-                                                       FontWeight="Light" 
-                                                       FontSize="13" 
-                                                       Foreground="{ThemeResource AppTextMuted}" 
-                                                       TextWrapping="Wrap"
-                                                       VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </StackPanel>
-
+                            <StackPanel Margin="0,0,0,24">
+                                <StackPanel Orientation="Horizontal">
                                     <Button x:Name="CheckUpdatesButton" 
-                                            Grid.Column="1" 
-                                            Content="Check for updates" 
-                                            Background="{ThemeResource AppAccent}" 
-                                            Foreground="White" 
-                                            FontFamily="Segoe UI" 
-                                            FontWeight="Light" 
-                                            Padding="18,7" 
-                                            BorderThickness="0" 
-                                            Click="CheckUpdatesButton_Click" />
-                                </Grid>
-                            </Border>
+                        Content="Check for updates" 
+                        Background="{ThemeResource AppCardBg}" 
+                        Foreground="{ThemeResource AppTextPrimary}" 
+                        BorderBrush="{ThemeResource AppCardBorder}"
+                        BorderThickness="1"
+                        FontFamily="Segoe UI" 
+                        FontWeight="Normal" 
+                        FontSize="13"
+                        Padding="18,6" 
+                        Click="CheckUpdatesButton_Click" />
 
-                            <!-- SECTION 3: ABOUT -->
-                            <TextBlock Text="About" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="18" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,10,0,10" />
+                                    <ProgressRing x:Name="UpdateProgressRing" 
+                              Width="18" 
+                              Height="18" 
+                              IsActive="False" 
+                              Visibility="Collapsed" 
+                              Foreground="{ThemeResource SystemAccentColor}" 
+                              Margin="14,0,0,0" 
+                              VerticalAlignment="Center" />
+                                </StackPanel>
 
-                            <Border Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="24" 
-                                    Margin="0,0,0,24">
-                                <StackPanel>
-                                    <Image Source="ms-appx:///Assets/PrismStore.png" 
-                                           Width="96" 
-                                           Height="96" 
-                                           HorizontalAlignment="Left" 
-                                           Stretch="Uniform" 
-                                           Margin="0,0,0,16"/>
+                                <TextBlock x:Name="UpdateStatusText" 
+                       Text="PrismStore client is up to date." 
+                       FontFamily="Segoe UI" 
+                       FontWeight="Normal" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextMuted}" 
+                       TextWrapping="Wrap"
+                       Margin="0,8,0,0" />
+                            </StackPanel>
 
-                                    <TextBlock Text="PrismStore (version 1.0.26240.3)" 
-                                               FontFamily="Segoe UI" 
-                                               FontWeight="Bold" 
-                                               FontSize="16" 
-                                               Foreground="{ThemeResource AppTextPrimary}"
-                                               TextWrapping="Wrap" />
+                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
 
-                                    <TextBlock Text="By using this program, you agree to Geek Devs Comm: REIMP (GDCR)'s rules, terms, guidelines and regulations." 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="14" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap" 
-                                               Margin="0,10,0,16"/>
+                            <!-- ========================================== -->
+                            <!-- SECTION 3: ABOUT THIS APP                  -->
+                            <!-- ========================================== -->
+                            <TextBlock Text="About this app" 
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="20" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,16" />
 
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="64" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Source="ms-appx:///Assets/PrismStore.png" 
+                   Grid.Column="0"
+                   Width="56" 
+                   Height="56" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top"
+                   Stretch="Uniform" />
+
+                                <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                    <TextBlock Text="PrismStore" 
+                           FontFamily="Segoe UI" 
+                           FontWeight="SemiBold" 
+                           FontSize="16" 
+                           Foreground="{ThemeResource AppTextPrimary}" />
+
+                                    <TextBlock Text="Version 1.0.26240.5" 
+                           FontFamily="Segoe UI" 
+                           FontSize="12" 
+                           Foreground="{ThemeResource AppTextMuted}" 
+                           Margin="0,2,0,0" />
+
+                                    <TextBlock Text="© Geek Devs Comm: REIMP (GDCR). By using this program, you agree to GDCR's rules, terms, guidelines, and regulations." 
+                           FontFamily="Segoe UI" 
+                           FontSize="12" 
+                           Foreground="{ThemeResource AppTextSecondary}" 
+                           TextWrapping="Wrap" 
+                           Margin="0,8,0,14"/>
+
+                                    <!-- External Action Links -->
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Content="Discord Server" 
-                                                Background="{ThemeResource AppAccent}" 
-                                                Foreground="White" 
-                                                Padding="18,6" 
-                                                BorderThickness="0" 
-                                                Margin="0,0,12,0" 
-                                                Click="Discord_Click"/>
-                                        <Button Content="Website" 
-                                                Background="{ThemeResource AppAccent}" 
-                                                Foreground="White" 
-                                                Padding="18,6" 
-                                                BorderThickness="0" 
-                                                Click="Website_Click"/>
+                                        <HyperlinkButton Content="Discord Server" 
+                                     Foreground="{ThemeResource SystemAccentColor}" 
+                                     FontFamily="Segoe UI" 
+                                     FontSize="13" 
+                                     Padding="0,4,16,4" 
+                                     Click="Discord_Click" />
+
+                                        <HyperlinkButton Content="Official Website" 
+                                     Foreground="{ThemeResource SystemAccentColor}" 
+                                     FontFamily="Segoe UI" 
+                                     FontSize="13" 
+                                     Padding="0,4" 
+                                     Click="Website_Click" />
                                     </StackPanel>
                                 </StackPanel>
-                            </Border>
+                            </Grid>
 
-                            <!-- SECTION 4: CREDITS -->
+                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
+
+                            <!-- ========================================== -->
+                            <!-- SECTION 4: CREDITS                         -->
+                            <!-- ========================================== -->
                             <TextBlock Text="Credits" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="SemiBold" 
-                                       FontSize="18" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,10,0,10" />
+                   FontFamily="Segoe UI" 
+                   FontWeight="Normal" 
+                   FontSize="20" 
+                   Foreground="{ThemeResource AppTextPrimary}" 
+                   Margin="0,0,0,12" />
 
-                            <Border Background="{ThemeResource AppCardBg}" 
-                                    BorderBrush="{ThemeResource AppCardBorder}" 
-                                    BorderThickness="1" 
-                                    Padding="24">
-                                <StackPanel>
-                                    <TextBlock Text="Made by Andrew Shepherd Simson" 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="16" 
-                                               FontStyle="Italic" 
-                                               FontWeight="SemiBold" 
-                                               Foreground="{ThemeResource AppTextPrimary}" 
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,14" />
+                            <StackPanel Margin="0,0,0,16">
+                                <TextBlock Text="Made by Andrew Shepherd Simson" 
+                       FontFamily="Segoe UI" 
+                       FontSize="14" 
+                       FontWeight="SemiBold" 
+                       Foreground="{ThemeResource AppTextPrimary}" 
+                       Margin="0,0,0,8" />
 
-                                    <TextBlock Text="• Account and reviews system by Andrew" 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="13" 
-                                               FontStyle="Italic" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,6" />
+                                <TextBlock Text="• Account and reviews system by Andrew" 
+                       FontFamily="Segoe UI" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextSecondary}" 
+                       Margin="0,0,0,4" />
 
-                                    <TextBlock Text="• Server hosting by Dank" 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="13" 
-                                               FontStyle="Italic" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,6" />
+                                <TextBlock Text="• Server hosting by Dank" 
+                       FontFamily="Segoe UI" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextSecondary}" 
+                       Margin="0,0,0,4" />
 
-                                    <TextBlock Text="• Previous GeekHub/NanoStore database by Jack, Alex, and shuckkkers" 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="13" 
-                                               FontStyle="Italic" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,6" />
+                                <TextBlock Text="• Previous GeekHub/NanoStore database by Jack, Alex, and shuckkkers" 
+                       FontFamily="Segoe UI" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextSecondary}" 
+                       Margin="0,0,0,4" />
 
-                                    <TextBlock Text="• All GDCR developers who submitted their apps in CommProj" 
-                                               FontFamily="Segoe UI" 
-                                               FontSize="13" 
-                                               FontStyle="Italic" 
-                                               Foreground="{ThemeResource AppTextSecondary}" 
-                                               TextWrapping="Wrap" />
-                                </StackPanel>
-                            </Border>
+                                <TextBlock Text="• All GDCR developers who submitted their apps in CommProj" 
+                       FontFamily="Segoe UI" 
+                       FontSize="12" 
+                       Foreground="{ThemeResource AppTextSecondary}" />
+                            </StackPanel>
+
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

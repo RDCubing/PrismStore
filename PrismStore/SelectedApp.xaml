@@ -49,7 +49,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TopBarGrid.Padding" Value="16,0,8,0" />
-                        <Setter Target="MainScrollViewer.Padding" Value="16,16,16,32" />
+                        <Setter Target="MainContentPanel.Margin" Value="16,16,16,32" />
 
                         <!-- Stack Hero Header vertically -->
                         <Setter Target="HeroStackPanel.Orientation" Value="Vertical" />
@@ -75,7 +75,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TopBarGrid.Padding" Value="24,0,16,0" />
-                        <Setter Target="MainScrollViewer.Padding" Value="32,24,32,40" />
+                        <Setter Target="MainContentPanel.Margin" Value="32,24,32,40" />
 
                         <!-- Hero Header side-by-side -->
                         <Setter Target="HeroStackPanel.Orientation" Value="Horizontal" />
@@ -123,51 +123,68 @@
             </Button>
         </Grid>
 
-        <!-- Main Content Area -->
-        <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Padding="0">
-            <StackPanel MaxWidth="1100" HorizontalAlignment="Stretch">
+        <!-- Main Content Area (Edge-to-Edge ScrollViewer) -->
+        <ScrollViewer x:Name="MainScrollViewer" 
+                      Grid.Row="1" 
+                      Padding="0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+
+            <!-- Left-Aligned Content Panel (Applies margins internally to avoid scrollbar clipping) -->
+            <StackPanel x:Name="MainContentPanel" 
+                        MaxWidth="1040" 
+                        HorizontalAlignment="Left" 
+                        Margin="32,24,32,40">
 
                 <!-- SECTION 1: APP HERO HEADER -->
                 <Grid x:Name="HeroSection" 
                       Margin="0,0,0,28" 
                       Opacity="0" 
+                      HorizontalAlignment="Left"
                       RenderTransformOrigin="0.5,0.5">
                     <Grid.RenderTransform>
                         <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
                     </Grid.RenderTransform>
 
-                    <StackPanel x:Name="HeroStackPanel" Orientation="Horizontal" VerticalAlignment="Center">
-                        <!-- App Icon -->
-                        <Border x:Name="HeroIconBorder" Width="120" Height="120" 
-                                Background="{ThemeResource SystemAccentColor}" 
-                                BorderBrush="{ThemeResource AppCardBorder}" BorderThickness="1"
-                                HorizontalAlignment="Left" VerticalAlignment="Top">
-                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
+                    <StackPanel x:Name="HeroStackPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <!-- 1:1 App Icon Artwork Box -->
+                        <Grid x:Name="HeroIconBorder" 
+                              Width="120" 
+                              Height="120" 
+                              Background="{ThemeResource SystemAccentColor}"
+                              HorizontalAlignment="Left" 
+                              VerticalAlignment="Top">
+                            <Image Source="{Binding ImagePath}" 
+                                   Stretch="UniformToFill" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" />
+                        </Grid>
 
                         <!-- Titles & Actions -->
-                        <StackPanel x:Name="HeroDetailsPanel" Margin="24,0,0,0" VerticalAlignment="Center">
+                        <StackPanel x:Name="HeroDetailsPanel" Margin="24,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <TextBlock Text="{Binding Title}" 
                                        FontFamily="Segoe UI" 
                                        FontWeight="Light" 
                                        FontSize="28" 
                                        Foreground="{ThemeResource AppTextPrimary}" 
+                                       TextWrapping="Wrap"
                                        TextTrimming="CharacterEllipsis" />
 
                             <TextBlock Text="{Binding Subtitle}" 
                                        FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="15" 
+                                       FontWeight="Normal" 
+                                       FontSize="14" 
                                        Foreground="{ThemeResource AppTextSecondary}" 
-                                       Margin="0,2,0,0" 
+                                       Margin="0,3,0,0" 
                                        TextWrapping="Wrap" />
 
                             <TextBlock Text="{Binding Publisher}" 
                                        FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
+                                       FontWeight="Normal" 
                                        FontSize="13" 
                                        Foreground="{ThemeResource SystemAccentColor}" 
-                                       Margin="0,4,0,0" />
+                                       Margin="0,3,0,0" 
+                                       TextWrapping="Wrap" />
 
                             <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                 <Button x:Name="DownloadButton" 
@@ -175,8 +192,9 @@
                                         Background="{ThemeResource SystemAccentColor}" 
                                         Foreground="White" 
                                         FontFamily="Segoe UI" 
-                                        FontWeight="Light" 
-                                        Padding="20,6" 
+                                        FontWeight="Normal" 
+                                        FontSize="13"
+                                        Padding="22,6" 
                                         BorderThickness="0" 
                                         Click="InstantDownload_Click" />
 
@@ -201,7 +219,7 @@
                                               IsActive="False" 
                                               Visibility="Collapsed" 
                                               Margin="12,0,0,0" 
-                                              Foreground="{ThemeResource AppAccent}" />
+                                              Foreground="{ThemeResource SystemAccentColor}" />
                             </StackPanel>
 
                             <StackPanel x:Name="DownloadProgressPanel" Visibility="Collapsed" Margin="0,12,0,0">
@@ -216,7 +234,7 @@
                                              Minimum="0" 
                                              Maximum="100" 
                                              Value="0" 
-                                             Foreground="{ThemeResource AppAccent}" />
+                                             Foreground="{ThemeResource SystemAccentColor}" />
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
@@ -225,7 +243,7 @@
                 <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
 
                 <!-- SECTION 2 & 3: DETAILS AND METADATA -->
-                <Grid x:Name="BodySplitPanel" HorizontalAlignment="Stretch" Margin="0,0,0,28">
+                <Grid x:Name="BodySplitPanel" HorizontalAlignment="Left" Margin="0,0,0,28">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -239,7 +257,7 @@
                     <StackPanel x:Name="DetailsSection" 
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                HorizontalAlignment="Stretch"
+                                HorizontalAlignment="Left"
                                 Margin="0,0,24,0" 
                                 Opacity="0"
                                 RenderTransformOrigin="0.5,0.5">
@@ -256,8 +274,8 @@
 
                         <TextBlock Text="{Binding Description}" 
                                    FontFamily="Segoe UI" 
-                                   FontWeight="Light" 
-                                   FontSize="14" 
+                                   FontWeight="Normal" 
+                                   FontSize="13" 
                                    LineHeight="20" 
                                    TextWrapping="Wrap" 
                                    Foreground="{ThemeResource AppTextSecondary}" 
@@ -266,8 +284,8 @@
                         <Border Background="{ThemeResource AppCardBg}" 
                                 BorderBrush="{ThemeResource AppCardBorder}" 
                                 BorderThickness="1" 
-                                HorizontalAlignment="Stretch"
-                                MaxHeight="420">
+                                HorizontalAlignment="Left"
+                                MaxHeight="440">
                             <Image Source="{Binding DetailImagePath}" 
                                    Stretch="Uniform" 
                                    HorizontalAlignment="Center" 
@@ -284,32 +302,32 @@
                             BorderThickness="1" 
                             Padding="16" 
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch"
+                            HorizontalAlignment="Left"
                             Opacity="0"
                             RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform>
                             <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
                         </Border.RenderTransform>
 
-                        <StackPanel HorizontalAlignment="Stretch">
-                            <TextBlock Text="Additional Information" 
+                        <StackPanel HorizontalAlignment="Left" Width="246">
+                            <TextBlock Text="Additional information" 
                                        FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
-                                       FontSize="16" 
+                                       FontWeight="Normal" 
+                                       FontSize="15" 
                                        Foreground="{ThemeResource AppTextPrimary}" 
-                                       Margin="0,0,0,12" />
+                                       Margin="0,0,0,14" />
 
                             <TextBlock Text="Supported Platform" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Framework}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Framework}" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Version" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Version}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Version}" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Category" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Category}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Category}" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Publisher" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Publisher}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" />
+                            <TextBlock Text="{Binding Publisher}" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
                 </Grid>
@@ -319,6 +337,7 @@
                 <!-- SECTION 4: RATINGS & REVIEWS -->
                 <StackPanel x:Name="ReviewsSection" 
                             Opacity="0"
+                            HorizontalAlignment="Left"
                             RenderTransformOrigin="0.5,0.5">
                     <StackPanel.RenderTransform>
                         <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
@@ -331,14 +350,15 @@
                                Foreground="{ThemeResource AppTextPrimary}" 
                                Margin="0,0,0,14" />
 
-                    <!-- Rating Summary -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <!-- Rating Summary Header -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20" HorizontalAlignment="Left">
                         <TextBlock x:Name="AverageRatingText" 
                                    Text="0.0" 
                                    FontFamily="Segoe UI" 
                                    FontWeight="Light" 
                                    FontSize="42" 
                                    Foreground="{ThemeResource SystemAccentColor}" />
+
                         <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                             <TextBlock Text="Average rating" FontFamily="Segoe UI" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" />
                             <TextBlock x:Name="ReviewCountText" Text="0 reviews" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
@@ -346,15 +366,23 @@
                     </StackPanel>
 
                     <!-- Review Form -->
-                    <StackPanel x:Name="ReviewFormPanel" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Stretch" Visibility="Collapsed">
+                    <StackPanel x:Name="ReviewFormPanel" 
+            Margin="0,0,0,20" 
+            MaxWidth="480" 
+            HorizontalAlignment="Stretch" 
+            Visibility="Collapsed">
+
                         <TextBox x:Name="ReviewCommentBox" 
-                                 PlaceholderText="Write your review..." 
-                                 AcceptsReturn="True" 
-                                 Height="75" 
-                                 TextWrapping="Wrap" />
+             PlaceholderText="Write your review..." 
+             AcceptsReturn="True" 
+             Height="75" 
+             FontFamily="Segoe UI"
+             FontSize="14"
+             HorizontalAlignment="Stretch"
+             TextWrapping="Wrap" />
 
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <ComboBox x:Name="ReviewRatingBox" Header="Rating" SelectedIndex="4" Width="90">
+                            <ComboBox x:Name="ReviewRatingBox" Header="Rating" SelectedIndex="4" Width="90" FontFamily="Segoe UI">
                                 <ComboBoxItem Content="1" />
                                 <ComboBoxItem Content="2" />
                                 <ComboBoxItem Content="3" />
@@ -363,25 +391,28 @@
                             </ComboBox>
 
                             <Button Content="Submit Review" 
-                                    Background="{ThemeResource AppAccent}" 
-                                    Foreground="White" 
-                                    FontFamily="Segoe UI" 
-                                    FontWeight="Light" 
-                                    BorderThickness="0" 
-                                    Margin="14,24,0,0" 
-                                    Click="SubmitReview_Click" />
+                Background="{ThemeResource SystemAccentColor}" 
+                Foreground="White" 
+                FontFamily="Segoe UI" 
+                FontWeight="Normal" 
+                FontSize="13" 
+                BorderThickness="0" 
+                Height="34"
+                Padding="20,0"
+                Margin="14,24,0,0" 
+                Click="SubmitReview_Click" />
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Sign In Required Prompt -->
+                    <!-- Sign In Required Notice -->
                     <Border x:Name="SignInToReviewPanel" 
                             Background="{ThemeResource AppCardBg}" 
                             BorderBrush="{ThemeResource AppCardBorder}" 
                             BorderThickness="1" 
                             Padding="14" 
                             Margin="0,0,0,20" 
-                            MaxWidth="600" 
-                            HorizontalAlignment="Stretch" 
+                            Width="480" 
+                            HorizontalAlignment="Left" 
                             Visibility="Collapsed">
                         <StackPanel>
                             <TextBlock Text="Sign in to write a review" 
@@ -391,38 +422,49 @@
                                        Foreground="{ThemeResource AppTextPrimary}" />
                             <TextBlock Text="You must be logged into your PrismStore account to post ratings and feedback." 
                                        FontFamily="Segoe UI" 
-                                       FontWeight="Light" 
+                                       FontWeight="Normal" 
                                        FontSize="12" 
                                        Foreground="{ThemeResource AppTextMuted}" 
+                                       TextWrapping="Wrap"
                                        Margin="0,2,0,0" />
                         </StackPanel>
                     </Border>
 
-                    <!-- Responsive Reviews Grid -->
+                    <!-- Responsive Reviews Grid (Left aligned, zero padding container style) -->
                     <GridView x:Name="ReviewsGrid" 
                               SelectionMode="None" 
                               IsItemClickEnabled="False"
-                              HorizontalAlignment="Stretch">
+                              HorizontalAlignment="Left"
+                              Padding="0"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsWrapGrid Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
+
                         <GridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                 <Setter Property="Margin" Value="0,0,12,12" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="MinWidth" Value="0" />
+                                <Setter Property="MinHeight" Value="0" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Stretch" />
                             </Style>
                         </GridView.ItemContainerStyle>
+
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Border Background="{ThemeResource AppCardBg}" 
                                         BorderBrush="{ThemeResource AppCardBorder}" 
                                         BorderThickness="1" 
                                         Padding="14" 
-                                        Width="480"
-                                        MinHeight="100" 
-                                        HorizontalAlignment="Stretch"
+                                        Width="340"
+                                        MinHeight="90" 
+                                        HorizontalAlignment="Left"
                                         Opacity="0"
                                         RenderTransformOrigin="0.5,0.5"
                                         Loaded="ReviewCard_Loaded">
@@ -431,16 +473,33 @@
                                     </Border.RenderTransform>
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding username}" FontFamily="Segoe UI" FontWeight="SemiBold" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" />
-                                            <TextBlock Text=" • " FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" Margin="4,0,4,0" />
-                                            <TextBlock Text="{Binding updatedAt}" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
+                                            <TextBlock Text="{Binding username}" 
+                                                       FontFamily="Segoe UI" 
+                                                       FontWeight="SemiBold" 
+                                                       FontSize="13" 
+                                                       Foreground="{ThemeResource AppTextPrimary}" />
+                                            <TextBlock Text=" • " 
+                                                       FontFamily="Segoe UI" 
+                                                       FontSize="11" 
+                                                       Foreground="{ThemeResource AppTextMuted}" 
+                                                       Margin="4,0,4,0" />
+                                            <TextBlock Text="{Binding updatedAt}" 
+                                                       FontFamily="Segoe UI" 
+                                                       FontSize="11" 
+                                                       Foreground="{ThemeResource AppTextMuted}" />
                                         </StackPanel>
 
                                         <TextBlock FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource SystemAccentColor}" Margin="0,3,0,0">
                                             <Run Text="★ " /><Run Text="{Binding rating}" />
                                         </TextBlock>
 
-                                        <TextBlock Text="{Binding comment}" FontFamily="Segoe UI" FontWeight="Light" FontSize="13" TextWrapping="Wrap" Foreground="{ThemeResource AppTextSecondary}" Margin="0,4,0,0" />
+                                        <TextBlock Text="{Binding comment}" 
+                                                   FontFamily="Segoe UI" 
+                                                   FontWeight="Normal" 
+                                                   FontSize="13" 
+                                                   TextWrapping="Wrap" 
+                                                   Foreground="{ThemeResource AppTextSecondary}" 
+                                                   Margin="0,4,0,0" />
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
@@ -448,21 +507,22 @@
                     </GridView>
 
                     <!-- Pagination Controls -->
-                    <StackPanel x:Name="PaginationPanel" Orientation="Horizontal" Margin="0,8,0,0" VerticalAlignment="Center" Visibility="Collapsed">
+                    <StackPanel x:Name="PaginationPanel" Orientation="Horizontal" Margin="0,8,0,0" HorizontalAlignment="Left" Visibility="Collapsed">
                         <Button x:Name="PrevPageButton" 
                                 Content="Previous" 
                                 Background="{ThemeResource AppCardBg}" 
                                 BorderBrush="{ThemeResource AppCardBorder}"
                                 BorderThickness="1"
                                 FontFamily="Segoe UI" 
-                                FontWeight="Light" 
+                                FontWeight="Normal" 
+                                FontSize="12"
                                 Padding="12,5" 
                                 Click="PrevPageButton_Click" />
 
                         <TextBlock x:Name="PageNumberText" 
                                    Text="Page 1 of 1" 
                                    FontFamily="Segoe UI" 
-                                   FontWeight="Light" 
+                                   FontWeight="Normal" 
                                    FontSize="12" 
                                    Foreground="{ThemeResource AppTextSecondary}" 
                                    VerticalAlignment="Center" 
@@ -474,7 +534,8 @@
                                 BorderBrush="{ThemeResource AppCardBorder}"
                                 BorderThickness="1"
                                 FontFamily="Segoe UI" 
-                                FontWeight="Light" 
+                                FontWeight="Normal" 
+                                FontSize="12"
                                 Padding="12,5" 
                                 Click="NextPageButton_Click" />
                     </StackPanel>
@@ -483,9 +544,10 @@
                     <TextBlock x:Name="EmptyStateText" 
                                Text="No reviews yet. Be the first to share feedback." 
                                FontFamily="Segoe UI" 
-                               FontWeight="Light" 
+                               FontWeight="Normal" 
                                FontSize="13" 
                                Foreground="{ThemeResource AppTextMuted}" 
+                               HorizontalAlignment="Left"
                                Visibility="Collapsed" 
                                Margin="0,8,0,0" />
                 </StackPanel>
