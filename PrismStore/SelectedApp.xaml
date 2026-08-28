@@ -12,27 +12,27 @@
         <ResourceDictionary>
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppAccent" Color="#0078D7" />
                     <SolidColorBrush x:Key="AppHeaderBg" Color="#1F1F1F" />
                     <SolidColorBrush x:Key="AppCardBg" Color="#262626" />
                     <SolidColorBrush x:Key="AppCardBorder" Color="#3D3D3D" />
                     <SolidColorBrush x:Key="AppHeroBg" Color="#103F66" />
                     <SolidColorBrush x:Key="AppTagBg" Color="#383838" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="#CCCCCC" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="#8A8A8A" />
                 </ResourceDictionary>
 
                 <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
+                    <SolidColorBrush x:Key="AppAccent" Color="#005A9E" />
                     <SolidColorBrush x:Key="AppHeaderBg" Color="#F2F2F2" />
                     <SolidColorBrush x:Key="AppCardBg" Color="#FFFFFF" />
                     <SolidColorBrush x:Key="AppCardBorder" Color="#E5E5E5" />
                     <SolidColorBrush x:Key="AppHeroBg" Color="#CCE4F7" />
                     <SolidColorBrush x:Key="AppTagBg" Color="#E6E6E6" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
+                    <SolidColorBrush x:Key="AppTextPrimary" Color="#000000" />
+                    <SolidColorBrush x:Key="AppTextSecondary" Color="#505050" />
+                    <SolidColorBrush x:Key="AppTextMuted" Color="#767676" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -51,13 +51,19 @@
                         <Setter Target="TopBarGrid.Padding" Value="16,0,8,0" />
                         <Setter Target="MainScrollViewer.Padding" Value="16,16,16,32" />
 
-                        <!-- Stack Hero elements vertically -->
+                        <!-- Stack Hero Header vertically -->
                         <Setter Target="HeroStackPanel.Orientation" Value="Vertical" />
                         <Setter Target="HeroDetailsPanel.Margin" Value="0,16,0,0" />
 
-                        <!-- Stack Body details & metadata vertically -->
-                        <Setter Target="BodySplitPanel.Orientation" Value="Vertical" />
+                        <!-- Stack Body Details & Metadata vertically -->
+                        <Setter Target="DetailsSection.(Grid.Row)" Value="0" />
+                        <Setter Target="DetailsSection.(Grid.Column)" Value="0" />
+                        <Setter Target="DetailsSection.(Grid.ColumnSpan)" Value="2" />
                         <Setter Target="DetailsSection.Margin" Value="0,0,0,24" />
+
+                        <Setter Target="MetadataSection.(Grid.Row)" Value="1" />
+                        <Setter Target="MetadataSection.(Grid.Column)" Value="0" />
+                        <Setter Target="MetadataSection.(Grid.ColumnSpan)" Value="2" />
                         <Setter Target="MetadataSection.Margin" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
@@ -71,12 +77,21 @@
                         <Setter Target="TopBarGrid.Padding" Value="24,0,16,0" />
                         <Setter Target="MainScrollViewer.Padding" Value="32,24,32,40" />
 
+                        <!-- Hero Header side-by-side -->
                         <Setter Target="HeroStackPanel.Orientation" Value="Horizontal" />
                         <Setter Target="HeroDetailsPanel.Margin" Value="24,0,0,0" />
 
-                        <Setter Target="BodySplitPanel.Orientation" Value="Horizontal" />
-                        <Setter Target="DetailsSection.Margin" Value="0,0,32,0" />
+                        <!-- Body Details (Left) and Metadata (Right) in columns -->
+                        <Setter Target="DetailsSection.(Grid.Row)" Value="0" />
+                        <Setter Target="DetailsSection.(Grid.Column)" Value="0" />
+                        <Setter Target="DetailsSection.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="DetailsSection.Margin" Value="0,0,24,0" />
+
+                        <Setter Target="MetadataSection.(Grid.Row)" Value="0" />
+                        <Setter Target="MetadataSection.(Grid.Column)" Value="1" />
+                        <Setter Target="MetadataSection.(Grid.ColumnSpan)" Value="1" />
                         <Setter Target="MetadataSection.Margin" Value="0" />
+                        <Setter Target="MetadataSection.Width" Value="280" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -124,7 +139,7 @@
                     <StackPanel x:Name="HeroStackPanel" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- App Icon -->
                         <Border x:Name="HeroIconBorder" Width="120" Height="120" 
-                                Background="{ThemeResource AppCardBg}" 
+                                Background="{ThemeResource SystemAccentColor}" 
                                 BorderBrush="{ThemeResource AppCardBorder}" BorderThickness="1"
                                 HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Image Source="{Binding ImagePath}" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -151,13 +166,13 @@
                                        FontFamily="Segoe UI" 
                                        FontWeight="Light" 
                                        FontSize="13" 
-                                       Foreground="{ThemeResource AppAccent}" 
+                                       Foreground="{ThemeResource SystemAccentColor}" 
                                        Margin="0,4,0,0" />
 
                             <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                                 <Button x:Name="DownloadButton" 
                                         Content="Get / Download" 
-                                        Background="{ThemeResource AppAccent}" 
+                                        Background="{ThemeResource SystemAccentColor}" 
                                         Foreground="White" 
                                         FontFamily="Segoe UI" 
                                         FontWeight="Light" 
@@ -210,14 +225,24 @@
                 <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
 
                 <!-- SECTION 2 & 3: DETAILS AND METADATA -->
-                <StackPanel x:Name="BodySplitPanel" Orientation="Horizontal" Margin="0,0,0,28">
+                <Grid x:Name="BodySplitPanel" HorizontalAlignment="Stretch" Margin="0,0,0,28">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
                     <!-- Left: Description & Screenshots (Stagger 2) -->
                     <StackPanel x:Name="DetailsSection" 
-                                Margin="0,0,32,0" 
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                HorizontalAlignment="Stretch"
+                                Margin="0,0,24,0" 
                                 Opacity="0"
-                                RenderTransformOrigin="0.5,0.5"
-                                MinWidth="280"
-                                MaxWidth="720">
+                                RenderTransformOrigin="0.5,0.5">
                         <StackPanel.RenderTransform>
                             <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
                         </StackPanel.RenderTransform>
@@ -241,27 +266,32 @@
                         <Border Background="{ThemeResource AppCardBg}" 
                                 BorderBrush="{ThemeResource AppCardBorder}" 
                                 BorderThickness="1" 
-                                MaxHeight="380">
-                            <Image Source="{Binding DetailImagePath}" Stretch="Uniform" />
+                                HorizontalAlignment="Stretch"
+                                MaxHeight="420">
+                            <Image Source="{Binding DetailImagePath}" 
+                                   Stretch="Uniform" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
                         </Border>
                     </StackPanel>
 
                     <!-- Right: Package Metadata Box (Stagger 3) -->
                     <Border x:Name="MetadataSection" 
+                            Grid.Row="0"
+                            Grid.Column="1"
                             Background="{ThemeResource AppCardBg}" 
                             BorderBrush="{ThemeResource AppCardBorder}" 
                             BorderThickness="1" 
                             Padding="16" 
                             VerticalAlignment="Top"
+                            HorizontalAlignment="Stretch"
                             Opacity="0"
-                            RenderTransformOrigin="0.5,0.5"
-                            MinWidth="260"
-                            MaxWidth="320">
+                            RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform>
                             <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
                         </Border.RenderTransform>
 
-                        <StackPanel>
+                        <StackPanel HorizontalAlignment="Stretch">
                             <TextBlock Text="Additional Information" 
                                        FontFamily="Segoe UI" 
                                        FontWeight="Light" 
@@ -270,19 +300,19 @@
                                        Margin="0,0,0,12" />
 
                             <TextBlock Text="Supported Platform" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Framework}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Framework}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Version" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Version}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Version}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Category" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Category}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" Margin="0,2,0,10" />
+                            <TextBlock Text="{Binding Category}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" Margin="0,2,0,10" />
 
                             <TextBlock Text="Publisher" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
-                            <TextBlock Text="{Binding Publisher}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" />
+                            <TextBlock Text="{Binding Publisher}" FontFamily="Segoe UI" FontWeight="Light" FontSize="14" Foreground="{ThemeResource AppTextPrimary}" TextWrapping="Wrap" />
                         </StackPanel>
                     </Border>
-                </StackPanel>
+                </Grid>
 
                 <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
 
@@ -308,7 +338,7 @@
                                    FontFamily="Segoe UI" 
                                    FontWeight="Light" 
                                    FontSize="42" 
-                                   Foreground="{ThemeResource AppAccent}" />
+                                   Foreground="{ThemeResource SystemAccentColor}" />
                         <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
                             <TextBlock Text="Average rating" FontFamily="Segoe UI" FontSize="13" Foreground="{ThemeResource AppTextPrimary}" />
                             <TextBlock x:Name="ReviewCountText" Text="0 reviews" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
@@ -368,7 +398,7 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Responsive Reviews Grid (Wraps automatically on mobile/desktop) -->
+                    <!-- Responsive Reviews Grid -->
                     <GridView x:Name="ReviewsGrid" 
                               SelectionMode="None" 
                               IsItemClickEnabled="False"
@@ -391,7 +421,7 @@
                                         BorderThickness="1" 
                                         Padding="14" 
                                         Width="480"
-                                        MinHeight="100"
+                                        MinHeight="100" 
                                         HorizontalAlignment="Stretch"
                                         Opacity="0"
                                         RenderTransformOrigin="0.5,0.5"
@@ -406,7 +436,7 @@
                                             <TextBlock Text="{Binding updatedAt}" FontFamily="Segoe UI" FontSize="11" Foreground="{ThemeResource AppTextMuted}" />
                                         </StackPanel>
 
-                                        <TextBlock FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource AppAccent}" Margin="0,3,0,0">
+                                        <TextBlock FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource SystemAccentColor}" Margin="0,3,0,0">
                                             <Run Text="★ " /><Run Text="{Binding rating}" />
                                         </TextBlock>
 
@@ -441,7 +471,7 @@
                         <Button x:Name="NextPageButton" 
                                 Content="Next" 
                                 Background="{ThemeResource AppCardBg}" 
-                                BorderBrush="{ThemeResource AppCardBorder}" 
+                                BorderBrush="{ThemeResource AppCardBorder}"
                                 BorderThickness="1"
                                 FontFamily="Segoe UI" 
                                 FontWeight="Light" 
