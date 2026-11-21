@@ -62,5 +62,32 @@ namespace PrismStore.Services
                 throw;
             }
         }
+
+        public static async Task<bool> DeleteReview(string token, string reviewId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(
+                    HttpMethod.Delete,
+                    new Uri($"{BaseApiUrl}/{reviewId}")
+                );
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    request.Headers.Authorization = new HttpCredentialsHeaderValue("Bearer", token);
+                }
+
+                var response = await client.SendRequestAsync(request);
+                string result = await response.Content.ReadAsStringAsync();
+
+                Debug.WriteLine($"[DELETE REVIEW {reviewId}] {response.StatusCode} - {result}");
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[DELETE REVIEW ERROR] {ex.Message}");
+                return false;
+            }
+        }
     }
 }

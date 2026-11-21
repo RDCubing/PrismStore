@@ -2,102 +2,32 @@
     x:Class="PrismStore.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:PrismStore"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <!-- Windows 10 Store Solid Palette -->
-        <ResourceDictionary>
-            <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Default">
-                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
-                    <SolidColorBrush x:Key="AppHeaderBg" Color="{ThemeResource SystemAltHighColor}" />
-                    <SolidColorBrush x:Key="AppSidebarBg" Color="{ThemeResource SystemChromeMediumColor}" />
-                    <SolidColorBrush x:Key="AppCardBg" Color="{ThemeResource SystemListLowColor}" />
-                    <SolidColorBrush x:Key="AppCardBorder" Color="{ThemeResource SystemChromeHighColor}" />
-                    <SolidColorBrush x:Key="AppHeroBg" Color="{ThemeResource SystemAccentColor}" />
-                    <SolidColorBrush x:Key="AppTagBg" Color="{ThemeResource SystemListMediumColor}" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="Light">
-                    <SolidColorBrush x:Key="AppAccent" Color="{ThemeResource SystemAccentColor}" />
-                    <SolidColorBrush x:Key="AppHeaderBg" Color="{ThemeResource SystemAltHighColor}" />
-                    <SolidColorBrush x:Key="AppSidebarBg" Color="{ThemeResource SystemChromeMediumColor}" />
-                    <SolidColorBrush x:Key="AppCardBg" Color="{ThemeResource SystemListLowColor}" />
-                    <SolidColorBrush x:Key="AppCardBorder" Color="{ThemeResource SystemChromeHighColor}" />
-                    <SolidColorBrush x:Key="AppHeroBg" Color="{ThemeResource SystemAccentColor}" />
-                    <SolidColorBrush x:Key="AppTagBg" Color="{ThemeResource SystemListMediumColor}" />
-                    <SolidColorBrush x:Key="AppTextPrimary" Color="{ThemeResource SystemBaseHighColor}" />
-                    <SolidColorBrush x:Key="AppTextSecondary" Color="{ThemeResource SystemBaseMediumHighColor}" />
-                    <SolidColorBrush x:Key="AppTextMuted" Color="{ThemeResource SystemBaseMediumColor}" />
-                </ResourceDictionary>
-            </ResourceDictionary.ThemeDictionaries>
-
-            <!-- CLASSIC WINDOWS STORE MINIMAL TILE -->
-            <DataTemplate x:Key="SquareAppTemplate">
-                <Grid Width="125" 
-          Margin="8"
-          Background="Transparent"
-          Opacity="0"
-          RenderTransformOrigin="0.5,0.5"
-          Loaded="AppTile_Loaded">
-
-                    <Grid.RenderTransform>
-                        <CompositeTransform ScaleX="0.8" ScaleY="0.8" />
-                    </Grid.RenderTransform>
-
-                    <Grid.RowDefinitions>
-                        <!-- 1:1 Square Icon/Artwork -->
-                        <RowDefinition Height="125" />
-                        <!-- Title & Publisher Text -->
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <!-- 1:1 Square Artwork Container -->
-                    <Grid Grid.Row="0" Background="{ThemeResource AppHeroBg}">
-                        <Image Source="{Binding ImagePath}" 
-                   Stretch="UniformToFill" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" />
-                    </Grid>
-
-                    <!-- Metadata Section (Title + Publisher) -->
-                    <StackPanel Grid.Row="1" Margin="0,8,0,0">
-                        <!-- Title (e.g. Facebook) -->
-                        <TextBlock Text="{Binding Title}" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="14" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       TextTrimming="CharacterEllipsis" 
-                       MaxLines="1" />
-
-                        <!-- Publisher (e.g. Meta) -->
-                        <TextBlock Text="{Binding Publisher}" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextMuted}" 
-                       TextTrimming="CharacterEllipsis" 
-                       MaxLines="1" 
-                       Margin="0,2,0,0" />
-                    </StackPanel>
+        <DataTemplate x:Key="SquareAppTemplate">
+            <Grid Width="125" Margin="8" Background="Transparent" Opacity="0" Loaded="AppTile_Loaded">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="125" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                    <Image Source="{Binding ImagePath}" Stretch="UniformToFill" />
                 </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
+                <StackPanel Grid.Row="1" Margin="0,8,0,0">
+                    <TextBlock Text="{Binding Title}" FontSize="14" TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    <TextBlock Text="{Binding Publisher}" FontSize="12" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" TextTrimming="CharacterEllipsis" MaxLines="1" Margin="0,2,0,0" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!-- Responsive Breakpoints targeting root SplitView -->
+    <Grid x:Name="RootPageGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="AdaptiveStates">
-                <!-- Mobile Screens (< 720px) -->
                 <VisualState x:Name="MobileState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
@@ -107,8 +37,6 @@
                         <Setter Target="RootSplitView.IsPaneOpen" Value="False" />
                     </VisualState.Setters>
                 </VisualState>
-
-                <!-- Desktop Screens (>= 720px) -->
                 <VisualState x:Name="DesktopState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="720" />
@@ -122,608 +50,338 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="54" />
+            <RowDefinition Height="48" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <!-- Top Navigation Bar -->
-        <Grid Grid.Row="0" Background="{ThemeResource AppHeaderBg}">
+        <!-- Top Bar (Extended Into TitleBar) -->
+        <Grid x:Name="TopHeaderGrid"
+      Background="{ThemeResource SystemControlBackgroundAltHighBrush}"
+      Padding="0,0,138,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="54" />
+                <ColumnDefinition Width="48" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="48" />
             </Grid.ColumnDefinitions>
 
-            <Button x:Name="HamburgerBtn" Grid.Column="0" Width="54" Height="54"
-                    Background="Transparent" BorderThickness="0" Click="HamburgerBtn_Click">
-                <FontIcon Glyph="&#xE700;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppTextPrimary}" FontSize="18" />
+            <Button x:Name="HamburgerBtn"
+            Grid.Column="0"
+            Width="48"
+            Height="48"
+            Background="Transparent"
+            Canvas.ZIndex="1"
+            Click="HamburgerBtn_Click">
+                <FontIcon Glyph="&#xE700;" FontFamily="Segoe MDL2 Assets" />
             </Button>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="1">
-                <Image Source="ms-appx:///Assets/PrismStore.png" 
-                       Width="50" 
-                       Height="50" 
-                       VerticalAlignment="Center" 
-                       Stretch="Uniform" 
-                       Margin="0,0,0,0"/>
-                <TextBlock x:Name="HeaderTitleText"
-                           Text="Store" 
-                           FontFamily="Segoe UI" 
-                           FontWeight="Light" 
-                           FontSize="26" 
-                           Foreground="{ThemeResource AppTextPrimary}" 
-                           VerticalAlignment="Center" 
-                           Margin="14,0,0,0" />
-            </StackPanel>
+            <!-- Only this middle grid acts as the draggable title bar -->
+            <Grid x:Name="AppTitleBarDragRegion"
+          Grid.Column="1"
+          Background="Transparent">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="ms-appx:///Assets/PrismStore.png" Width="36" Height="36" VerticalAlignment="Center" />
+                    <TextBlock x:Name="HeaderTitleText" Text="Store" Style="{StaticResource TitleTextBlockStyle}" VerticalAlignment="Center" Margin="12,0,0,0" />
+                </StackPanel>
+            </Grid>
 
-            <Button x:Name="RefreshBtn" Grid.Column="2" Width="54" Height="54"
-                    Background="Transparent" BorderThickness="0" Click="RefreshBtn_Click">
-                <FontIcon Glyph="&#xE72C;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppTextPrimary}" FontSize="18" />
+            <Button x:Name="RefreshBtn"
+            Grid.Column="2"
+            Width="48"
+            Height="48"
+            Background="Transparent"
+            Canvas.ZIndex="1"
+            Click="RefreshBtn_Click">
+                <SymbolIcon Symbol="Refresh" />
             </Button>
         </Grid>
 
-        <!-- SplitView Navigation Drawer -->
-        <SplitView x:Name="RootSplitView" 
-                   Grid.Row="1" 
-                   CompactPaneLength="54" 
-                   OpenPaneLength="260" 
-                   DisplayMode="CompactOverlay" 
-                   IsPaneOpen="False">
-
+        <!-- Navigation & Views -->
+        <SplitView x:Name="RootSplitView" Grid.Row="1" CompactPaneLength="48" OpenPaneLength="240" DisplayMode="CompactOverlay">
             <SplitView.Pane>
-                <Grid x:Name="NavPaneGrid" 
-                      Background="{ThemeResource AppSidebarBg}"
-                      PointerEntered="NavPaneGrid_PointerEntered" 
-                      PointerExited="NavPaneGrid_PointerExited">
-
-                    <ListBox x:Name="NavListBox" 
-                             Background="Transparent" 
-                             SelectionChanged="NavListBox_SelectionChanged" 
-                             Margin="0,12,0,0">
-                        <ListBoxItem Tag="Home" IsSelected="True" Height="52" Padding="14,0">
+                <Grid x:Name="NavPaneGrid" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}" PointerEntered="NavPaneGrid_PointerEntered" PointerExited="NavPaneGrid_PointerExited">
+                    <ListBox x:Name="NavListBox" Background="Transparent" SelectionChanged="NavListBox_SelectionChanged" Margin="0,8,0,0">
+                        <ListBoxItem Tag="Home" IsSelected="True" Height="48" Padding="14,0">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE80F;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="Home" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                                <SymbolIcon Symbol="Home" Width="20" />
+                                <TextBlock Text="Home" VerticalAlignment="Center" Margin="14,0,0,0" />
                             </StackPanel>
                         </ListBoxItem>
-
-                        <ListBoxItem Tag="AllApps" Height="52" Padding="14,0">
+                        <ListBoxItem Tag="AllApps" Height="48" Padding="14,0">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE71D;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="All Apps" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                                <SymbolIcon Symbol="AllApps" Width="20" />
+                                <TextBlock Text="All Apps" VerticalAlignment="Center" Margin="14,0,0,0" />
                             </StackPanel>
                         </ListBoxItem>
-
-                        <ListBoxItem Tag="Categories" Height="52" Padding="14,0">
+                        <ListBoxItem Tag="Updates" Height="48" Padding="14,0">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE8F1;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="Categories" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                                <SymbolIcon Symbol="Sync" Width="20" />
+                                <TextBlock Text="Updates" VerticalAlignment="Center" Margin="14,0,0,0" />
                             </StackPanel>
                         </ListBoxItem>
-
-                        <ListBoxItem Tag="Downloads" Height="52" Padding="14,0">
+                        <ListBoxItem Tag="Uploader" Height="48" Padding="14,0">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE896;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="Downloads" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                                <SymbolIcon Symbol="Upload" Width="20" />
+                                <TextBlock Text="Upload App" VerticalAlignment="Center" Margin="14,0,0,0" />
                             </StackPanel>
                         </ListBoxItem>
-
-                        <ListBoxItem Tag="Uploader" Height="52" Padding="14,0">
+                        <ListBoxItem Tag="Settings" Height="48" Padding="14,0">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE753;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="Upload App" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
-                            </StackPanel>
-                        </ListBoxItem>
-
-                        <ListBoxItem Tag="Settings" Height="52" Padding="14,0">
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE713;" FontFamily="Segoe MDL2 Assets" Foreground="{ThemeResource AppAccent}" Width="26" FontSize="18"/>
-                                <TextBlock Text="Settings" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Foreground="{ThemeResource AppTextPrimary}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                                <SymbolIcon Symbol="Setting" Width="20" />
+                                <TextBlock Text="Settings" VerticalAlignment="Center" Margin="14,0,0,0" />
                             </StackPanel>
                         </ListBoxItem>
                     </ListBox>
                 </Grid>
             </SplitView.Pane>
 
-            <!-- Store Main Content Area -->
             <SplitView.Content>
-                <Grid>
-                    <ProgressRing x:Name="LoadingRing" 
-                                  IsActive="False" 
-                                  Visibility="Collapsed" 
-                                  Width="56" 
-                                  Height="56" 
-                                  HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center" 
-                                  Foreground="{ThemeResource AppAccent}" />
+                <Grid x:Name="ContentHostGrid">
+                    <ProgressRing x:Name="LoadingRing" Visibility="Collapsed" Width="56" Height="56" />
 
-                    <!-- VIEW 1: HOME STOREFRONT -->
-                    <ScrollViewer x:Name="HomeScrollViewer" 
-                                  Visibility="Visible" 
-                                  Padding="0,0,0,0"
-                                  RenderTransformOrigin="0.5,0.5">
+                    <!-- VIEW 1: HOME -->
+                    <ScrollViewer x:Name="HomeScrollViewer" RenderTransformOrigin="0.5,0.5">
                         <ScrollViewer.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
+                            <CompositeTransform />
                         </ScrollViewer.RenderTransform>
-
                         <StackPanel>
-                            <!-- EDGE-TO-EDGE ROTATING SPOTLIGHT BANNER -->
-                            <Grid x:Name="SpotlightHeroContainer" 
-                                  Height="280" 
-                                  HorizontalAlignment="Stretch"
-                                  Background="{ThemeResource AppHeroBg}"
-                                  Margin="0,0,0,24"
-                                  Tapped="SpotlightBanner_Tapped">
-
-                                <Image x:Name="SpotlightHeroImage" 
-                                       Stretch="UniformToFill" 
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center" 
-                                       Opacity="0.45" />
-
-                                <Grid Background="#40000000" />
+                            <Grid x:Name="SpotlightHeroContainer" Height="280" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Margin="0,0,0,24" Tapped="SpotlightBanner_Tapped">
+                                <Image x:Name="SpotlightHeroImage" Stretch="UniformToFill" Opacity="0.45" />
                                 <Grid>
                                     <Grid.Background>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                            <GradientStop Color="#00000000" Offset="0.0" />
-                                            <GradientStop Color="#CC000000" Offset="1.0" />
+                                            <GradientStop Color="#40000000" Offset="0" />
+                                            <GradientStop Color="#CC000000" Offset="1" />
                                         </LinearGradientBrush>
                                     </Grid.Background>
                                 </Grid>
-
                                 <Grid Padding="28,24,28,20">
-                                    <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" MaxWidth="680">
-                                        <Border Background="{ThemeResource AppAccent}" 
-                                                HorizontalAlignment="Left" 
-                                                Padding="8,3" 
-                                                Margin="0,0,0,10">
-                                            <TextBlock Text="FEATURED SPOTLIGHT" 
-                                                       FontSize="11" 
-                                                       FontFamily="Segoe UI" 
-                                                       FontWeight="SemiBold" 
-                                                       Foreground="White"/>
-                                        </Border>
-
-                                        <TextBlock x:Name="SpotlightTitleText" 
-                                                   Text="Welcome to PrismStore" 
-                                                   FontFamily="Segoe UI" 
-                                                   FontWeight="Light" 
-                                                   FontSize="30" 
-                                                   Foreground="White" 
-                                                   TextWrapping="Wrap"
-                                                   TextTrimming="CharacterEllipsis"/>
-
-                                        <TextBlock x:Name="SpotlightSubtitleText" 
-                                                   Text="Browse top featured apps, Windows 10 UWP packages, and classic software." 
-                                                   FontFamily="Segoe UI" 
-                                                   FontWeight="Normal" 
-                                                   FontSize="14" 
-                                                   Foreground="White" 
-                                                   TextWrapping="Wrap"
-                                                   Margin="0,4,0,0"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" MaxWidth="680">
+                                        <Image x:Name="SpotlightIconImage" Source="Assets/PrismStore.png" Width="64" Height="64" Margin="0,0,16,0" VerticalAlignment="Bottom" Stretch="UniformToFill" />
+                                        <StackPanel VerticalAlignment="Bottom">
+                                            <Border Background="{ThemeResource SystemControlBackgroundAccentBrush}" HorizontalAlignment="Left" Padding="8,3" Margin="0,0,0,10">
+                                                <TextBlock Text="FEATURED SPOTLIGHT" FontSize="11" FontWeight="SemiBold" Foreground="White" />
+                                            </Border>
+                                            <TextBlock x:Name="SpotlightTitleText" Text="Welcome to PrismStore" Style="{StaticResource HeaderTextBlockStyle}" FontSize="30" Foreground="White" TextTrimming="CharacterEllipsis" />
+                                            <TextBlock x:Name="SpotlightSubtitleText" Text="Browse top featured apps, Windows 10 UWP packages, and classic software." Style="{StaticResource BodyTextBlockStyle}" Foreground="White" Margin="0,4,0,0" />
+                                        </StackPanel>
                                     </StackPanel>
-
-                                    <!-- Carousel Navigation Dots -->
-                                    <StackPanel x:Name="SpotlightDotsPanel" 
-                                                Orientation="Horizontal" 
-                                                HorizontalAlignment="Right" 
-                                                VerticalAlignment="Bottom" 
-                                                Margin="0,0,8,4"/>
+                                    <StackPanel x:Name="SpotlightDotsPanel" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,4" />
                                 </Grid>
                             </Grid>
 
-                            <!-- Home Grid Collections -->
-                            <StackPanel Padding="20,0,20,0">
-                                <TextBlock Text="Top Apps" 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="Light" 
-                                           FontSize="26" 
-                                           Foreground="{ThemeResource AppTextPrimary}" 
-                                           Margin="6,0,0,14"/>
+                            <StackPanel Padding="20,0">
+                                <StackPanel x:Name="HomeUpdatesSection" Visibility="Collapsed" Margin="0,0,0,24">
+                                    <TextBlock Text="App Updates" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,0,14" />
+                                    <GridView x:Name="HomeUpdatesGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AppItem_Click" ItemTemplate="{StaticResource SquareAppTemplate}" />
+                                </StackPanel>
 
-                                <GridView x:Name="TopAppsGridView" 
-                                          SelectionMode="None" 
-                                          IsItemClickEnabled="True" 
-                                          ItemClick="AppItem_Click" 
-                                          ItemTemplate="{StaticResource SquareAppTemplate}" 
-                                          Margin="0,0,0,32" />
+                                <TextBlock Text="Top Apps" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,0,14" />
+                                <GridView x:Name="TopAppsGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AppItem_Click" ItemTemplate="{StaticResource SquareAppTemplate}" Margin="0,0,0,32" />
 
-                                <TextBlock Text="Windows 10 Apps" 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="Light" 
-                                           FontSize="26" 
-                                           Foreground="{ThemeResource AppTextPrimary}" 
-                                           Margin="6,0,0,14"/>
+                                <TextBlock Text="Windows 10 Apps" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,0,14" />
+                                <GridView x:Name="PrismAppsGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AppItem_Click" ItemTemplate="{StaticResource SquareAppTemplate}" Margin="0,0,0,32" />
 
-                                <GridView x:Name="PrismAppsGridView" 
-                                          SelectionMode="None" 
-                                          IsItemClickEnabled="True" 
-                                          ItemClick="AppItem_Click" 
-                                          ItemTemplate="{StaticResource SquareAppTemplate}" 
-                                          Margin="0,0,0,32" />
-
-                                <TextBlock Text="Windows 8.1 Apps" 
-                                           FontFamily="Segoe UI" 
-                                           FontWeight="Light" 
-                                           FontSize="26" 
-                                           Foreground="{ThemeResource AppTextPrimary}" 
-                                           Margin="6,0,0,14"/>
-
-                                <GridView x:Name="NeonAppsGridView" 
-                                          SelectionMode="None" 
-                                          IsItemClickEnabled="True" 
-                                          ItemClick="AppItem_Click" 
-                                          ItemTemplate="{StaticResource SquareAppTemplate}" 
-                                          Margin="0,0,0,32" />
+                                <TextBlock Text="Windows 8.1 Apps" Style="{StaticResource TitleTextBlockStyle}" Margin="6,0,0,14" />
+                                <GridView x:Name="NeonAppsGridView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AppItem_Click" ItemTemplate="{StaticResource SquareAppTemplate}" Margin="0,0,0,32" />
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- VIEW 2: ALL APPS MASTER GRID -->
-                    <Grid x:Name="AllAppsContainer" 
-                          Visibility="Collapsed"
-                          RenderTransformOrigin="0.5,0.5">
-                        <Grid.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
-                        </Grid.RenderTransform>
+                    <Grid x:Name="AllAppsContainer" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <AutoSuggestBox x:Name="SearchFilterBox" 
-                                        Grid.Row="0" 
-                                        Margin="24,16,24,10" 
-                                        Height="38" 
-                                        FontFamily="Segoe UI" 
-                                        FontWeight="Light" 
-                                        FontSize="15" 
-                                        PlaceholderText="Search apps and packages..." 
-                                        QueryIcon="Find" 
-                                        TextChanged="SearchFilterBox_TextChanged"/>
+                        <!-- Search, Count & Filter Flyout Bar -->
+                        <Grid Margin="24,16,24,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <GridView x:Name="AllAppsGridView" 
-                                  Grid.Row="1" 
-                                  Padding="20,10,20,40" 
-                                  SelectionMode="None" 
-                                  IsItemClickEnabled="True" 
-                                  ItemClick="AppItem_Click" 
-                                  ItemTemplate="{StaticResource SquareAppTemplate}" />
-                    </Grid>
+                            <AutoSuggestBox x:Name="SearchFilterBox"
+                        PlaceholderText="Search apps, publishers, or categories..."
+                        QueryIcon="Find"
+                        TextChanged="SearchFilterBox_TextChanged" />
 
-                    <!-- VIEW 3: CATEGORIES CONTAINER -->
-                    <Grid x:Name="CategoriesContainer" 
-      Visibility="Collapsed" 
-      RenderTransformOrigin="0.5,0.5">
-                        <Grid.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
-                        </Grid.RenderTransform>
+                            <TextBlock x:Name="AllAppsCountText"
+                   Grid.Column="1"
+                   Text="0 apps"
+                   Style="{StaticResource CaptionTextBlockStyle}"
+                   Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}"
+                   VerticalAlignment="Center"
+                   Margin="14,0" />
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                            <Button x:Name="FilterSortButton" Grid.Column="2" Content="Filter &amp; Sort">
+                                <Button.Flyout>
+                                    <Flyout x:Name="FilterFlyout" Placement="Bottom">
+                                        <StackPanel Width="260">
+                                            <ComboBox x:Name="SortComboBox"
+                                  Header="Sort by"
+                                  HorizontalAlignment="Stretch"
+                                  Margin="0,0,0,12"
+                                  SelectionChanged="FilterCriteria_Changed">
+                                                <ComboBoxItem Content="Featured" Tag="Featured" IsSelected="True" />
+                                                <ComboBoxItem Content="Top Apps" Tag="TopApps" />
+                                                <ComboBoxItem Content="Name (A - Z)" Tag="AlphaAsc" />
+                                                <ComboBoxItem Content="Name (Z - A)" Tag="AlphaDesc" />
+                                            </ComboBox>
 
-                        <!-- Header Section -->
-                        <StackPanel Grid.Row="0" Margin="24,16,24,16">
-                            <TextBlock Text="Categories" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Light" 
-                   FontSize="28" 
-                   Foreground="{ThemeResource AppTextPrimary}" />
-                            <TextBlock x:Name="CategorySubheaderText" 
-                   Text="Browse apps and games by category." 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="13" 
-                   Foreground="{ThemeResource AppTextMuted}" 
-                   TextWrapping="Wrap"
-                   Margin="0,2,0,0" />
-                        </StackPanel>
+                                            <ComboBox x:Name="CategoryComboBox"
+                                  Header="Category"
+                                  HorizontalAlignment="Stretch"
+                                  Margin="0,0,0,12"
+                                  SelectionChanged="FilterCriteria_Changed" />
 
-                        <!-- Filter Section -->
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="24,0,24,16">
-                            <ComboBox x:Name="CategoryComboBox" 
-                  Header="Category"
-                  MinWidth="240"
-                  FontFamily="Segoe UI" 
-                  FontWeight="Normal"
-                  FontSize="14"
-                  SelectionChanged="CategoryComboBox_SelectionChanged">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Name}" FontFamily="Segoe UI" FontWeight="Normal" />
-                                            <TextBlock Text="{Binding CountText}" FontFamily="Segoe UI" Foreground="{ThemeResource AppTextMuted}" Margin="6,0,0,0" />
+                                            <ComboBox x:Name="PublisherComboBox"
+                                  Header="Publisher"
+                                  HorizontalAlignment="Stretch"
+                                  Margin="0,0,0,12"
+                                  SelectionChanged="FilterCriteria_Changed" />
+
+                                            <ComboBox x:Name="PlatformComboBox"
+                                  Header="Platform"
+                                  HorizontalAlignment="Stretch"
+                                  Margin="0,0,0,16"
+                                  SelectionChanged="FilterCriteria_Changed">
+                                                <ComboBoxItem Content="All Platforms" Tag="All" IsSelected="True" />
+                                                <ComboBoxItem Content="Windows 10" Tag="Win10" />
+                                                <ComboBoxItem Content="Windows 8.1" Tag="Win81" />
+                                            </ComboBox>
+
+                                            <Button Content="Reset filters"
+                                HorizontalAlignment="Stretch"
+                                Click="ResetFilters_Click" />
                                         </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                        </Grid>
 
-                        <!-- Content Grid Area -->
-                        <Grid Grid.Row="2">
-                            <!-- GridView with Edge-Pinned Scrollbar and Zero-Padding Container Style -->
-                            <GridView x:Name="CategoryAppsGridView" 
-                  Padding="24,0,8,40"
-                  SelectionMode="None" 
-                  IsItemClickEnabled="True" 
-                  ItemClick="AppItem_Click" 
-                  ItemTemplate="{StaticResource SquareAppTemplate}">
-                            </GridView>
+                        <!-- Filtered & Sorted Apps Grid -->
+                        <Grid Grid.Row="1">
+                            <GridView x:Name="AllAppsGridView"
+                  Padding="20,10,20,40"
+                  SelectionMode="None"
+                  IsItemClickEnabled="True"
+                  ItemClick="AppItem_Click"
+                  ItemTemplate="{StaticResource SquareAppTemplate}" />
 
-                            <!-- Empty State Notice -->
-                            <StackPanel x:Name="CategoryEmptyStateText" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    Visibility="Collapsed" 
-                    Margin="0,40,0,0">
-                                <FontIcon Glyph="&#xE71D;" 
-                      FontFamily="Segoe MDL2 Assets" 
-                      FontSize="42" 
-                      Foreground="{ThemeResource AppTextMuted}" 
-                      HorizontalAlignment="Center" 
-                      Margin="0,0,0,12" />
-                                <TextBlock Text="No apps found in this category" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="18" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center" />
-                                <TextBlock Text="Check back later for newly added packages." 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="13" 
-                       Foreground="{ThemeResource AppTextMuted}" 
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center" 
-                       Margin="0,4,0,0" />
+                            <StackPanel x:Name="AllAppsEmptyPanel"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="Collapsed">
+                                <SymbolIcon Symbol="Find" Margin="0,0,0,10" />
+                                <TextBlock Text="No matching apps found" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Center" />
+                                <TextBlock Text="Try clearing your search or resetting filters." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" HorizontalAlignment="Center" />
                             </StackPanel>
                         </Grid>
                     </Grid>
 
-                    <!-- VIEW 4: DOWNLOADS CONTAINER -->
-                    <!-- VIEW 4: DOWNLOADS CONTAINER (BORDERLESS & NO CARD BACKGROUND) -->
-                    <!-- VIEW 4: DOWNLOADS CONTAINER (EDGE-ALIGNED SCROLLBAR & BORDERLESS CLASSIC LAYOUT) -->
-                    <Grid x:Name="DownloadsContainer" 
-      Visibility="Collapsed" 
-      RenderTransformOrigin="0.5,0.5">
-                        <Grid.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
-                        </Grid.RenderTransform>
-
+                    <!-- VIEW 5: UPDATES -->
+                    <Grid x:Name="AppUpdatesContainer" Visibility="Collapsed" Padding="32,24,32,40">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <!-- Header Section -->
-                        <StackPanel Grid.Row="0" Margin="32,24,32,12">
-                            <TextBlock Text="Downloads" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Light" 
-                   FontSize="28" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,4" />
-
-                            <TextBlock Text="Your recent downloads and installation history appear here." 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="13" 
-                   Foreground="{ThemeResource AppTextMuted}" 
-                   TextWrapping="Wrap" />
+                        <StackPanel Margin="0,0,0,14">
+                            <TextBlock Text="App Updates" Style="{StaticResource HeaderTextBlockStyle}" FontSize="28" />
+                            <TextBlock x:Name="AppUpdatesSummaryText" Text="Checking installed packages against the store catalog..." Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                         </StackPanel>
 
-                        <!-- Toolbar Action Button -->
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="32,0,32,18">
-                            <Button x:Name="ClearDownloadsHistoryButton" 
-                Content="Clear history" 
-                Background="{ThemeResource AppCardBg}" 
-                BorderBrush="{ThemeResource AppCardBorder}" 
-                BorderThickness="1" 
-                FontFamily="Segoe UI"
-                FontSize="13"
-                Padding="16,6" 
-                Click="ClearDownloadsHistory_Click" />
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,18">
+                            <Button x:Name="UpdateAllButton" Content="Update all" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Foreground="White" Margin="0,0,10,0" Visibility="Collapsed" Click="UpdateAllButton_Click" />
+                            <Button x:Name="RefreshUpdatesButton" Content="Check for updates" Click="RefreshBtn_Click" />
                         </StackPanel>
 
-                        <!-- History List View Area -->
-                        <Grid Grid.Row="2">
-                            <!-- ListView stretches full width to anchor the scrollbar to the window edge -->
-                            <ListView x:Name="DownloadsHistoryListView" 
-                  Padding="32,0,0,40"
-                  HorizontalAlignment="Stretch"
-                  SelectionMode="None" 
-                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  ScrollViewer.VerticalScrollMode="Auto">
-
+                        <Grid Grid.Row="2" MaxWidth="860" HorizontalAlignment="Left">
+                            <ListView x:Name="AppUpdatesListView" SelectionMode="None" IsItemClickEnabled="True" ItemClick="AppItem_Click">
                                 <ListView.ItemContainerStyle>
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                        <Setter Property="Padding" Value="0" />
-                                        <Setter Property="Margin" Value="0,0,0,14" />
-                                        <Setter Property="MinWidth" Value="0" />
-                                        <Setter Property="MinHeight" Value="0" />
+                                        <Setter Property="Padding" Value="12,10" />
+                                        <Setter Property="Margin" Value="0,0,0,6" />
                                     </Style>
                                 </ListView.ItemContainerStyle>
-
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- Constrain content width here instead of on the ListView -->
-                                        <Grid MaxWidth="800" HorizontalAlignment="Left" Background="Transparent">
+                                        <Grid Background="Transparent">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="48" />
+                                                <ColumnDefinition Width="64" />
                                                 <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- Icon Artwork (1:1 aspect) -->
-                                            <Grid Grid.Column="0" Width="48" Height="48" Background="{ThemeResource AppHeroBg}" VerticalAlignment="Center">
-                                                <Image Source="{Binding ImagePath}" 
-                                   Width="48" 
-                                   Height="48" 
-                                   Stretch="UniformToFill" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center"/>
+                                            <Grid Width="64" Height="64" VerticalAlignment="Top" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" />
                                             </Grid>
 
-                                            <!-- App Title & Download Info -->
-                                            <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding Title}" 
-                                       FontFamily="Segoe UI" 
-                                       FontWeight="Normal" 
-                                       FontSize="14" 
-                                       Foreground="{ThemeResource AppTextPrimary}" 
-                                       TextWrapping="Wrap" />
+                                            <StackPanel Grid.Column="1" Margin="18,0,20,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" Style="{StaticResource SubtitleTextBlockStyle}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{Binding VersionText}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Text="{Binding Publisher}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" TextTrimming="CharacterEllipsis" />
 
-                                                <TextBlock Text="{Binding FileName}" 
-                                       FontFamily="Segoe UI" 
-                                       FontSize="12" 
-                                       Foreground="{ThemeResource AppTextMuted}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,1,0,0" />
-
-                                                <TextBlock Text="{Binding DownloadedAt}" 
-                                       FontFamily="Segoe UI" 
-                                       FontSize="11" 
-                                       Foreground="{ThemeResource AppTextMuted}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,1,0,0" />
+                                                <!-- Per-App Queue & Download/Install Progress -->
+                                                <StackPanel Visibility="{Binding ProgressVisibility}" Margin="0,8,0,0">
+                                                    <TextBlock Text="{Binding StatusText}"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Foreground="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+                                           Margin="0,0,0,4" />
+                                                    <ProgressBar Value="{Binding ProgressValue}"
+                                             IsIndeterminate="{Binding IsIndeterminate}"
+                                             Visibility="{Binding ProgressBarVisibility}"
+                                             Maximum="100" />
+                                                </StackPanel>
                                             </StackPanel>
+
+                                            <Button Grid.Column="2"
+                                Content="{Binding ActionButtonText}"
+                                IsEnabled="{Binding IsActionEnabled}"
+                                Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+                                Foreground="White"
+                                VerticalAlignment="Center"
+                                Tag="{Binding}"
+                                Click="UpdateAppDirect_Click" />
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
 
-                            <!-- Empty State View -->
-                            <StackPanel x:Name="EmptyDownloadsPanel" 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Top"
-                    Margin="32,16,32,0"
-                    Visibility="Collapsed">
-                                <FontIcon Glyph="&#xE896;" 
-                      FontFamily="Segoe MDL2 Assets" 
-                      FontSize="36" 
-                      Foreground="{ThemeResource AppTextMuted}" 
-                      HorizontalAlignment="Left" 
-                      Margin="0,0,0,12"/>
-                                <TextBlock Text="No downloads yet" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="16" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       HorizontalAlignment="Left" 
-                       TextWrapping="Wrap"/>
-                                <TextBlock Text="Items downloaded from the store will appear here." 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextMuted}" 
-                       HorizontalAlignment="Left" 
-                       TextWrapping="Wrap" 
-                       Margin="0,2,0,0"/>
+                            <StackPanel x:Name="EmptyUpdatesPanel" Margin="0,24,0,0" Visibility="Collapsed">
+                                <SymbolIcon Symbol="Accept" HorizontalAlignment="Left" Margin="0,0,0,12" />
+                                <TextBlock Text="All apps are up to date" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                <TextBlock Text="Installed packages match the latest versions in PrismStore." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                             </StackPanel>
                         </Grid>
                     </Grid>
 
-                    <!-- VIEW 6: UPLOADER CONTAINER (CLASSIC WINDOWS 10 STORE FLAT LAYOUT) -->
-                    <ScrollViewer x:Name="UploaderContainer" 
-              Visibility="Collapsed" 
-              Padding="0"
-              RenderTransformOrigin="0.5,0.5">
+                    <!-- VIEW 6: UPLOADER -->
+                    <ScrollViewer x:Name="UploaderContainer" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5">
                         <ScrollViewer.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1" />
+                            <CompositeTransform />
                         </ScrollViewer.RenderTransform>
-
                         <StackPanel MaxWidth="640" HorizontalAlignment="Left" Margin="32,24,32,48">
+                            <TextBlock Text="App Uploader" Style="{StaticResource HeaderTextBlockStyle}" FontSize="28" />
+                            <TextBlock Text="Submit your applications and packages to the catalog." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,0,24" />
 
-                            <!-- Page Header -->
-                            <TextBlock Text="App Uploader" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Light" 
-                   FontSize="28" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,4" />
-
-                            <TextBlock Text="Submit your applications and packages to the catalog." 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="13" 
-                   Foreground="{ThemeResource AppTextMuted}" 
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,24" />
-
-                            <!-- Unauthenticated Prompt Banner -->
-                            <Border x:Name="UploaderAuthRequiredPanel" 
-                Background="{ThemeResource AppCardBg}" 
-                BorderBrush="{ThemeResource AppCardBorder}" 
-                BorderThickness="1" 
-                Padding="20" 
-                Margin="0,0,0,24"
-                Visibility="Collapsed">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-
-                                    <FontIcon Glyph="&#xE72E;" 
-                          FontFamily="Segoe MDL2 Assets" 
-                          FontSize="24" 
-                          Foreground="{ThemeResource SystemAccentColor}" 
-                          VerticalAlignment="Top" 
-                          Margin="0,2,16,0" />
-
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Sign in required" 
-                               FontFamily="Segoe UI" 
-                               FontWeight="SemiBold" 
-                               FontSize="16" 
-                               Foreground="{ThemeResource AppTextPrimary}"
-                               TextWrapping="Wrap" />
-
-                                        <TextBlock Text="Please sign in from the Settings account section to access the submission portal." 
-                               FontFamily="Segoe UI" 
-                               FontWeight="Normal" 
-                               FontSize="12" 
-                               Foreground="{ThemeResource AppTextSecondary}" 
-                               TextWrapping="Wrap" 
-                               Margin="0,4,0,0" />
+                            <Border x:Name="UploaderAuthRequiredPanel" Background="{ThemeResource SystemControlBackgroundListLowBrush}" BorderBrush="{ThemeResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" Padding="20" Margin="0,0,0,24" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Symbol="Permissions" VerticalAlignment="Top" Margin="0,2,16,0" />
+                                    <StackPanel>
+                                        <TextBlock Text="Sign in required" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                        <TextBlock Text="Please sign in from the Settings account section to access the submission portal." Style="{StaticResource CaptionTextBlockStyle}" />
                                     </StackPanel>
-                                </Grid>
+                                </StackPanel>
                             </Border>
 
-                            <!-- Submission Form Panel -->
                             <StackPanel x:Name="UploaderSubmissionFormPanel">
-
-                                <!-- App Details Section -->
-                                <TextBlock Text="Package Information" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="18" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       Margin="0,0,0,12" />
-
-                                <TextBox x:Name="UploaderTitleBox" 
-                     Header="Application title" 
-                     PlaceholderText="e.g. My Awesome App" 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     MaxLength="100" 
-                     Margin="0,0,0,14" />
-
-                                <TextBox x:Name="UploaderSubtitleBox" 
-                     Header="Subtitle" 
-                     PlaceholderText="Short summary" 
-                     MaxLength="200" 
-                     Height="68" 
-                     TextWrapping="Wrap" 
-                     AcceptsReturn="True" 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     Margin="0,0,0,14" />
+                                <TextBlock Text="Package Information" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,12" />
+                                <TextBox x:Name="UploaderTitleBox" Header="Application title" PlaceholderText="e.g. My Awesome App" MaxLength="100" Margin="0,0,0,14" />
+                                <TextBox x:Name="UploaderSubtitleBox" Header="Subtitle" PlaceholderText="Short summary" MaxLength="200" Height="68" TextWrapping="Wrap" AcceptsReturn="True" Margin="0,0,0,14" />
 
                                 <Grid Margin="0,0,0,14">
                                     <Grid.ColumnDefinitions>
@@ -731,22 +389,8 @@
                                         <ColumnDefinition Width="14" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBox x:Name="UploaderCategoryBox" 
-                         Grid.Column="0"
-                         Header="Category" 
-                         PlaceholderText="e.g. Utilities, Games" 
-                         FontFamily="Segoe UI" 
-                         FontSize="14" 
-                         MaxLength="100" />
-
-                                    <TextBox x:Name="UploaderPublisherBox" 
-                         Grid.Column="2"
-                         Header="Publisher" 
-                         PlaceholderText="e.g. Geek Devs" 
-                         FontFamily="Segoe UI" 
-                         FontSize="14" 
-                         MaxLength="100" />
+                                    <TextBox x:Name="UploaderCategoryBox" Header="Category" PlaceholderText="e.g. Utilities, Games" MaxLength="100" />
+                                    <TextBox x:Name="UploaderPublisherBox" Grid.Column="2" Header="Publisher" PlaceholderText="e.g. Geek Devs" MaxLength="100" />
                                 </Grid>
 
                                 <Grid Margin="0,0,0,14">
@@ -755,447 +399,238 @@
                                         <ColumnDefinition Width="14" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-
-                                    <TextBox x:Name="UploaderVersionBox" 
-                         Grid.Column="0"
-                         Header="Version" 
-                         PlaceholderText="e.g. 1.0.0" 
-                         FontFamily="Segoe UI" 
-                         FontSize="14" 
-                         MaxLength="50" />
-
-                                    <TextBox x:Name="UploaderFrameworkBox" 
-                         Grid.Column="2"
-                         Header="Framework / Target OS" 
-                         PlaceholderText="e.g. UWP, WinUI 3" 
-                         FontFamily="Segoe UI" 
-                         FontSize="14" 
-                         MaxLength="100" />
+                                    <TextBox x:Name="UploaderVersionBox" Header="Version" PlaceholderText="e.g. 1.0.0" MaxLength="50" />
+                                    <TextBox x:Name="UploaderFrameworkBox" Grid.Column="2" Header="Framework / Target OS" PlaceholderText="e.g. UWP, WinUI 3" MaxLength="100" />
                                 </Grid>
 
-                                <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,8,0,20" />
+                                <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,8,0,20" />
 
-                                <!-- Media & Package Links Section -->
-                                <TextBlock Text="Links &amp; Media" 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="18" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       Margin="0,0,0,12" />
+                                <TextBlock Text="Links &amp; Media" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,12" />
+                                <TextBox x:Name="UploaderIconUrlBox" Header="Icon image URL" PlaceholderText="https://..." Margin="0,0,0,14" />
+                                <TextBox x:Name="UploaderScreenshotUrlBox" Header="Screenshot image URL" PlaceholderText="https://..." Margin="0,0,0,14" />
+                                <TextBox x:Name="UploaderDownloadUrlBox" Header="Download package URL" PlaceholderText="https://..." Margin="0,0,0,14" />
+                                <TextBox x:Name="UploaderDescriptionBox" Header="Description" AcceptsReturn="True" TextWrapping="Wrap" Height="120" PlaceholderText="Full app details..." MaxLength="5000" Margin="0,0,0,24" />
 
-                                <TextBox x:Name="UploaderIconUrlBox" 
-                     Header="Icon image URL" 
-                     PlaceholderText="https://..." 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     Margin="0,0,0,14" />
-
-                                <TextBox x:Name="UploaderScreenshotUrlBox" 
-                     Header="Screenshot image URL" 
-                     PlaceholderText="https://..." 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     Margin="0,0,0,14" />
-
-                                <TextBox x:Name="UploaderDownloadUrlBox" 
-                     Header="Download package URL" 
-                     PlaceholderText="https://..." 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     Margin="0,0,0,14" />
-
-                                <TextBox x:Name="UploaderDescriptionBox" 
-                     Header="Description" 
-                     AcceptsReturn="True" 
-                     TextWrapping="Wrap" 
-                     Height="120" 
-                     PlaceholderText="Full app details..." 
-                     FontFamily="Segoe UI" 
-                     FontSize="14" 
-                     MaxLength="5000" 
-                     Margin="0,0,0,24" />
-
-                                <!-- Action Button -->
-                                <Button x:Name="UploaderSubmitButton"
-                    Content="Submit application"
-                    Background="{ThemeResource SystemAccentColor}" 
-                    Foreground="White" 
-                    FontFamily="Segoe UI" 
-                    FontWeight="Normal" 
-                    FontSize="13"
-                    Padding="24,7" 
-                    BorderThickness="0" 
-                    HorizontalAlignment="Left">
+                                <Button x:Name="UploaderSubmitButton" Content="Submit application" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Foreground="White">
                                     <Button.Flyout>
                                         <Flyout x:Name="UploaderSubmitConfirmFlyout">
                                             <StackPanel Width="280">
-                                                <TextBlock Text="Submit Application?" 
-                                       FontFamily="Segoe UI" 
-                                       FontSize="16" 
-                                       FontWeight="SemiBold" 
-                                       Foreground="{ThemeResource AppTextPrimary}"
-                                       Margin="0,0,0,6" 
-                                       TextWrapping="Wrap"/>
-
-                                                <TextBlock Text="Are you sure you want to submit this app for review? Please ensure all URLs and details are correct." 
-                                       FontFamily="Segoe UI" 
-                                       FontSize="12" 
-                                       Foreground="{ThemeResource AppTextSecondary}"
-                                       TextWrapping="Wrap" 
-                                       Margin="0,0,0,16"/>
-
+                                                <TextBlock Text="Submit Application?" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0,0,0,6" />
+                                                <TextBlock Text="Are you sure you want to submit this app for review? Please ensure all URLs and details are correct." Style="{StaticResource CaptionTextBlockStyle}" Margin="0,0,0,16" />
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="*" />
                                                         <ColumnDefinition Width="10" />
                                                         <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <Button Grid.Column="0" 
-                                        Content="Yes, submit" 
-                                        Background="{ThemeResource SystemAccentColor}" 
-                                        Foreground="White" 
-                                        FontFamily="Segoe UI" 
-                                        FontSize="12"
-                                        BorderThickness="0"
-                                        HorizontalAlignment="Stretch" 
-                                        Click="UploaderConfirmSubmit_Click"/>
-                                                    <Button Grid.Column="2" 
-                                        Content="Cancel" 
-                                        Background="{ThemeResource AppCardBg}" 
-                                        BorderBrush="{ThemeResource AppCardBorder}" 
-                                        BorderThickness="1"
-                                        FontFamily="Segoe UI" 
-                                        FontSize="12"
-                                        HorizontalAlignment="Stretch" 
-                                        Click="UploaderCancelSubmit_Click"/>
+                                                    <Button Content="Yes, submit" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Foreground="White" HorizontalAlignment="Stretch" Click="UploaderConfirmSubmit_Click" />
+                                                    <Button Grid.Column="2" Content="Cancel" HorizontalAlignment="Stretch" Click="UploaderCancelSubmit_Click" />
                                                 </Grid>
                                             </StackPanel>
                                         </Flyout>
                                     </Button.Flyout>
                                 </Button>
-
                             </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
-
-                    <!-- VIEW 5: INTEGRATED SETTINGS (CLASSIC WINDOWS 10 STORE 1507 / BUILD 10240 FLAT LAYOUT) -->
-                    <ScrollViewer x:Name="SettingsContainer" 
-              Visibility="Collapsed" 
-              Padding="0"
-              RenderTransformOrigin="0.5,0.5">
+                    <ScrollViewer x:Name="SettingsContainer" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5">
                         <ScrollViewer.RenderTransform>
-                            <CompositeTransform ScaleX="1" ScaleY="1"/>
+                            <CompositeTransform />
                         </ScrollViewer.RenderTransform>
-
                         <StackPanel MaxWidth="720" HorizontalAlignment="Left" Margin="32,24,32,48">
+                            <TextBlock Text="Settings" Style="{StaticResource HeaderTextBlockStyle}" FontSize="28" />
+                            <TextBlock Text="Manage your store account, client updates, and application details." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,0,28" />
+                            <TextBlock Text="Account" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" Margin="0,0,0,12" />
 
-                            <!-- Page Header -->
-                            <TextBlock Text="Settings" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Light" 
-                   FontSize="28" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,4" />
-
-                            <TextBlock Text="Manage your store account, client updates, and application details." 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="13" 
-                   Foreground="{ThemeResource AppTextMuted}" 
-                   TextWrapping="Wrap"
-                   Margin="0,0,0,28" />
-
-                            <!-- ========================================== -->
-                            <!-- SECTION 1: ACCOUNT                         -->
-                            <!-- ========================================== -->
-                            <TextBlock Text="Account" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="20" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,12" />
-
-                            <!-- Logged In Profile View -->
-                            <Grid x:Name="LoggedInProfilePanel" 
-              Margin="0,0,0,28" 
-              Visibility="Collapsed">
+                            <Grid x:Name="LoggedInProfilePanel" Margin="0,0,0,32" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <!-- User Avatar Glyph -->
-                                <Grid Grid.Column="0" Width="48" Height="48" Background="{ThemeResource AppHeroBg}">
-                                    <FontIcon Glyph="&#xE77B;" 
-                          FontFamily="Segoe MDL2 Assets" 
-                          FontSize="22" 
-                          Foreground="White" 
-                          HorizontalAlignment="Center" 
-                          VerticalAlignment="Center" />
+                                <Grid Width="64" Height="64" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                    <FontIcon Glyph="&#xE77B;"
+                  FontFamily="Segoe MDL2 Assets"
+                  FontSize="28"
+                  Foreground="White"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center" />
+                                    <Image x:Name="AccountAvatarImage" Stretch="UniformToFill" Visibility="Collapsed" />
                                 </Grid>
 
-                                <!-- User Details -->
-                                <StackPanel Grid.Column="1" Margin="14,0,16,0" VerticalAlignment="Center">
-                                    <TextBlock x:Name="AccountUsernameText" 
-                           Text="Logged in as User" 
-                           FontFamily="Segoe UI" 
-                           FontWeight="SemiBold" 
-                           FontSize="15" 
-                           Foreground="{ThemeResource AppTextPrimary}" 
-                           TextWrapping="Wrap" />
-
-                                    <TextBlock x:Name="SessionExpiryStatusText" 
-                           Text="Session expires in: --:--" 
-                           FontFamily="Segoe UI" 
-                           FontWeight="Normal" 
-                           FontSize="12" 
-                           Foreground="{ThemeResource AppTextMuted}" 
-                           TextWrapping="Wrap"
-                           Margin="0,2,0,0" />
+                                <StackPanel Grid.Column="1" Margin="18,0,20,0" VerticalAlignment="Center">
+                                    <TextBlock x:Name="AccountUsernameText"
+                   Text="Logged in as User"
+                   Style="{StaticResource SubtitleTextBlockStyle}"
+                   FontSize="18"
+                   FontWeight="SemiBold" />
+                                    <TextBlock x:Name="SessionExpiryStatusText"
+                   Text="Session expires in: --:--"
+                   Style="{StaticResource BodyTextBlockStyle}"
+                   FontSize="14"
+                   Margin="0,4,0,0"
+                   Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
                                 </StackPanel>
 
-                                <!-- Sign Out Button -->
                                 <Button Grid.Column="2"
-                    Content="Sign out" 
-                    Background="{ThemeResource AppCardBg}" 
-                    Foreground="{ThemeResource AppTextPrimary}" 
-                    BorderBrush="{ThemeResource AppCardBorder}"
-                    BorderThickness="1"
-                    FontFamily="Segoe UI" 
-                    FontWeight="Normal" 
-                    FontSize="12"
-                    Padding="16,6" 
-                    VerticalAlignment="Center"
-                    Click="SignOut_Click" />
+            Content="Sign out"
+            FontSize="15"
+            Padding="18,8"
+            MinHeight="38"
+            VerticalAlignment="Center"
+            Click="SignOut_Click" />
                             </Grid>
 
-                            <!-- Logged Out Sign In / Register Pivot -->
                             <StackPanel x:Name="LoggedOutAuthPanel" Margin="0,0,0,28">
                                 <Pivot Margin="0,-12,0,0">
                                     <PivotItem Header="Sign in">
                                         <StackPanel Width="320" HorizontalAlignment="Left" Margin="0,14,0,0">
-                                            <TextBox x:Name="LoginUsernameBox" 
-                 Header="Username" 
-                 FontFamily="Segoe UI"
-                 FontSize="14"
-                 Margin="0,0,0,14" />
+                                            <TextBox x:Name="LoginUsernameBox" Header="Username" Margin="0,0,0,14" />
+                                            <PasswordBox x:Name="LoginPasswordBox" Header="Password" Margin="0,0,0,20" />
 
-                                            <PasswordBox x:Name="LoginPasswordBox" 
-                     Header="Password" 
-                     FontFamily="Segoe UI"
-                     FontSize="14"
-                     Margin="0,0,0,20" />
-
-                                            <Button Content="Sign in" 
-                Background="{ThemeResource SystemAccentColor}" 
-                Foreground="White" 
-                FontFamily="Segoe UI" 
-                FontWeight="Normal" 
-                FontSize="13" 
-                Padding="28,6" 
-                BorderThickness="0" 
-                HorizontalAlignment="Left"
-                Click="LoginButton_Click" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Sign in" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Foreground="White" Click="LoginButton_Click" />
+                                                <Button x:Name="DiscordLoginButton" Margin="10,0,0,0" Background="#5865F2" Foreground="White" Click="DiscordLoginButton_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon Glyph="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0" />
+                                                        <TextBlock Text="Sign in with Discord" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
                                         </StackPanel>
                                     </PivotItem>
 
                                     <PivotItem Header="Create account">
                                         <StackPanel Width="320" HorizontalAlignment="Left" Margin="0,14,0,0">
-                                            <TextBox x:Name="RegEmailBox" 
-                 Header="Email address" 
-                 FontFamily="Segoe UI"
-                 FontSize="14"
-                 Margin="0,0,0,14" />
+                                            <TextBox x:Name="RegEmailBox" Header="Email address" Margin="0,0,0,14" />
+                                            <TextBox x:Name="RegUsernameBox" Header="Username" Margin="0,0,0,14" />
+                                            <PasswordBox x:Name="RegPasswordBox" Header="Password" Margin="0,0,0,14" />
+                                            <PasswordBox x:Name="RegConfirmPasswordBox" Header="Confirm password" Margin="0,0,0,20" />
 
-                                            <TextBox x:Name="RegUsernameBox" 
-                 Header="Username" 
-                 FontFamily="Segoe UI"
-                 FontSize="14"
-                 Margin="0,0,0,14" />
-
-                                            <PasswordBox x:Name="RegPasswordBox" 
-                     Header="Password" 
-                     FontFamily="Segoe UI"
-                     FontSize="14"
-                     Margin="0,0,0,14" />
-
-                                            <PasswordBox x:Name="RegConfirmPasswordBox" 
-                     Header="Confirm password" 
-                     FontFamily="Segoe UI"
-                     FontSize="14"
-                     Margin="0,0,0,20" />
-
-                                            <Button Content="Register account" 
-                Background="{ThemeResource SystemAccentColor}" 
-                Foreground="White" 
-                FontFamily="Segoe UI" 
-                FontWeight="Normal" 
-                FontSize="13" 
-                Padding="24,6" 
-                BorderThickness="0" 
-                HorizontalAlignment="Left"
-                Click="RegisterButton_Click" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Register account" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Foreground="White" Click="RegisterButton_Click" />
+                                                <Button Margin="10,0,0,0" Background="#5865F2" Foreground="White" Click="DiscordLoginButton_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <FontIcon Glyph="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0" />
+                                                        <TextBlock Text="Continue with Discord" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
                                         </StackPanel>
                                     </PivotItem>
                                 </Pivot>
                             </StackPanel>
 
-                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
+                            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,0,0,24" />
+                            <!-- Personalization (Hidden automatically on pre-1709 builds without AcrylicBrush) -->
+                            <StackPanel x:Name="PersonalizationSection" Visibility="Collapsed">
+                                <TextBlock Text="Personalization" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" Margin="0,0,0,12" />
+                                <ComboBox x:Name="AcrylicModeComboBox"
+                                          Header="Transparency effects"
+                                          Width="240"
+                                          Margin="0,0,0,24"
+                                          SelectionChanged="AcrylicModeComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="Full acrylic" Tag="Full" />
+                                    <ComboBoxItem Content="Semi acrylic" Tag="Semi" />
+                                    <ComboBoxItem Content="Off" Tag="Off" />
+                                </ComboBox>
 
-                            <!-- ========================================== -->
-                            <!-- SECTION 2: APP UPDATES                     -->
-                            <!-- ========================================== -->
-                            <TextBlock Text="App updates" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="20" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,12" />
-
+                                <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,0,0,24" />
+                            </StackPanel>
+                            <!-- Client Updates -->
+                            <TextBlock Text="App updates" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" Margin="0,0,0,12" />
                             <StackPanel Margin="0,0,0,24">
                                 <StackPanel Orientation="Horizontal">
-                                    <Button x:Name="CheckUpdatesButton" 
-                        Content="Check for updates" 
-                        Background="{ThemeResource AppCardBg}" 
-                        Foreground="{ThemeResource AppTextPrimary}" 
-                        BorderBrush="{ThemeResource AppCardBorder}"
-                        BorderThickness="1"
-                        FontFamily="Segoe UI" 
-                        FontWeight="Normal" 
-                        FontSize="13"
-                        Padding="18,6" 
-                        Click="CheckUpdatesButton_Click" />
-
-                                    <ProgressRing x:Name="UpdateProgressRing" 
-                              Width="18" 
-                              Height="18" 
-                              IsActive="False" 
-                              Visibility="Collapsed" 
-                              Foreground="{ThemeResource SystemAccentColor}" 
-                              Margin="14,0,0,0" 
-                              VerticalAlignment="Center" />
+                                    <Button x:Name="CheckUpdatesButton" Content="Check for updates" Click="CheckUpdatesButton_Click" />
+                                    <ProgressRing x:Name="UpdateProgressRing" Width="18" Height="18" Visibility="Collapsed" Margin="14,0,0,0" />
                                 </StackPanel>
-
-                                <TextBlock x:Name="UpdateStatusText" 
-                       Text="PrismStore client is up to date." 
-                       FontFamily="Segoe UI" 
-                       FontWeight="Normal" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextMuted}" 
-                       TextWrapping="Wrap"
-                       Margin="0,8,0,0" />
+                                <TextBlock x:Name="UpdateStatusText" Text="PrismStore client is up to date." Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,8,0,0" />
                             </StackPanel>
 
-                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
+                            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,0,0,24" />
 
-                            <!-- ========================================== -->
-                            <!-- SECTION 3: ABOUT THIS APP                  -->
-                            <!-- ========================================== -->
-                            <TextBlock Text="About this app" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="20" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,16" />
+                            <!-- Device & Windows Specifications -->
+                            <StackPanel Margin="0,0,0,24">
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Device specifications" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" VerticalAlignment="Center" />
+                                    <Button x:Name="CopyDeviceInfoButton" Grid.Column="1" Content="Copy" Click="CopyDeviceInfoButton_Click" />
+                                </Grid>
 
+                                <Grid MaxWidth="520" HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Device name" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="DeviceNameText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Manufacturer" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="DeviceManufacturerText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Model" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="DeviceModelText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Processor" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="ProcessorInfoText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Installed RAM" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="InstalledRamText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="5" Grid.Column="0" Text="System type" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,8" />
+                                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="SystemTypeText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" Margin="0,0,0,8" />
+
+                                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Windows edition &amp; build" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,0,16,0" />
+                                    <TextBlock Grid.Row="6" Grid.Column="1" x:Name="WindowsVersionText" Text="—" Style="{StaticResource BodyTextBlockStyle}" IsTextSelectionEnabled="True" />
+                                </Grid>
+                            </StackPanel>
+
+                            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,0,0,24" />
+
+                            <!-- About -->
+                            <TextBlock Text="About this app" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" Margin="0,0,0,16" />
                             <Grid Margin="0,0,0,20">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="64" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-
-                                <Image Source="ms-appx:///Assets/PrismStore.png" 
-                   Grid.Column="0"
-                   Width="56" 
-                   Height="56" 
-                   HorizontalAlignment="Left" 
-                   VerticalAlignment="Top"
-                   Stretch="Uniform" />
-
+                                <Image Source="ms-appx:///Assets/PrismStore.png" Width="56" Height="56" HorizontalAlignment="Left" VerticalAlignment="Top" />
                                 <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                                    <TextBlock Text="PrismStore" 
-                           FontFamily="Segoe UI" 
-                           FontWeight="SemiBold" 
-                           FontSize="16" 
-                           Foreground="{ThemeResource AppTextPrimary}" />
-
-                                    <TextBlock Text="Version 1.0.26240.5" 
-                           FontFamily="Segoe UI" 
-                           FontSize="12" 
-                           Foreground="{ThemeResource AppTextMuted}" 
-                           Margin="0,2,0,0" />
-
-                                    <TextBlock Text="© Geek Devs Comm: REIMP (GDCR). By using this program, you agree to GDCR's rules, terms, guidelines, and regulations." 
-                           FontFamily="Segoe UI" 
-                           FontSize="12" 
-                           Foreground="{ThemeResource AppTextSecondary}" 
-                           TextWrapping="Wrap" 
-                           Margin="0,8,0,14"/>
-
-                                    <!-- External Action Links -->
+                                    <TextBlock Text="PrismStore" Style="{StaticResource SubtitleTextBlockStyle}" />
+                                    <TextBlock Text="Version 1.2.26325.0" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
+                                    <TextBlock Text="© Geek Devs Comm: REIMP (GDCR). By using this program, you agree to GDCR's rules, terms, guidelines, and regulations." Style="{StaticResource CaptionTextBlockStyle}" Margin="0,8,0,14" />
                                     <StackPanel Orientation="Horizontal">
-                                        <HyperlinkButton Content="Discord Server" 
-                                     Foreground="{ThemeResource SystemAccentColor}" 
-                                     FontFamily="Segoe UI" 
-                                     FontSize="13" 
-                                     Padding="0,4,16,4" 
-                                     Click="Discord_Click" />
-
-                                        <HyperlinkButton Content="Official Website" 
-                                     Foreground="{ThemeResource SystemAccentColor}" 
-                                     FontFamily="Segoe UI" 
-                                     FontSize="13" 
-                                     Padding="0,4" 
-                                     Click="Website_Click" />
+                                        <HyperlinkButton Content="Discord Server" Padding="0,4,16,4" Click="Discord_Click" />
+                                        <HyperlinkButton Content="Official Website" Padding="0,4" Click="Website_Click" />
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
 
-                            <Rectangle Height="1" Fill="{ThemeResource AppCardBorder}" Margin="0,0,0,24" />
+                            <Rectangle Height="1" Fill="{ThemeResource SystemControlForegroundBaseLowBrush}" Margin="0,0,0,24" />
 
-                            <!-- ========================================== -->
-                            <!-- SECTION 4: CREDITS                         -->
-                            <!-- ========================================== -->
-                            <TextBlock Text="Credits" 
-                   FontFamily="Segoe UI" 
-                   FontWeight="Normal" 
-                   FontSize="20" 
-                   Foreground="{ThemeResource AppTextPrimary}" 
-                   Margin="0,0,0,12" />
-
+                            <!-- Credits -->
+                            <TextBlock Text="Credits" Style="{StaticResource TitleTextBlockStyle}" FontSize="20" Margin="0,0,0,12" />
                             <StackPanel Margin="0,0,0,16">
-                                <TextBlock Text="Made by Andrew Shepherd Simson" 
-                       FontFamily="Segoe UI" 
-                       FontSize="14" 
-                       FontWeight="SemiBold" 
-                       Foreground="{ThemeResource AppTextPrimary}" 
-                       Margin="0,0,0,8" />
-
-                                <TextBlock Text="• Account and reviews system by Andrew" 
-                       FontFamily="Segoe UI" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextSecondary}" 
-                       Margin="0,0,0,4" />
-
-                                <TextBlock Text="• Server hosting by Dank" 
-                       FontFamily="Segoe UI" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextSecondary}" 
-                       Margin="0,0,0,4" />
-
-                                <TextBlock Text="• Previous GeekHub/NanoStore database by Jack, Alex, and shuckkkers" 
-                       FontFamily="Segoe UI" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextSecondary}" 
-                       Margin="0,0,0,4" />
-
-                                <TextBlock Text="• All GDCR developers who submitted their apps in CommProj" 
-                       FontFamily="Segoe UI" 
-                       FontSize="12" 
-                       Foreground="{ThemeResource AppTextSecondary}" />
+                                <TextBlock Text="Made by Andrew Shepherd Simson" Style="{StaticResource BodyTextBlockStyle}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <TextBlock Text="• Account and reviews system by Andrew" Style="{StaticResource CaptionTextBlockStyle}" />
+                                <TextBlock Text="• Server hosting by Dank" Style="{StaticResource CaptionTextBlockStyle}" />
+                                <TextBlock Text="• Previous GeekHub/NanoStore database by Jack, Alex, and shuckkkers" Style="{StaticResource CaptionTextBlockStyle}" />
+                                <TextBlock Text="• All GDCR developers who submitted their apps in CommProj" Style="{StaticResource CaptionTextBlockStyle}" />
                             </StackPanel>
-
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

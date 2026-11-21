@@ -4,9 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Windows.Foundation.Metadata;
 using Windows.Storage;
-using Windows.UI.Popups;
+using Windows.System;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
+using Windows.Web.Http.Headers;
 
 namespace PrismStore.Services
 {
@@ -15,15 +19,190 @@ namespace PrismStore.Services
         private static readonly HttpClient client = new HttpClient();
         private static readonly ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
+        private const string BaseApiUrl = "https://gdcr.dankassassin368.com/ns-status/auth";
+
+        #region Session Helpers
+
         public static string CurrentToken => localSettings.Values["token"] as string;
         public static string CurrentUsername => localSettings.Values["username"] as string;
+        public static string CurrentAvatar => localSettings.Values["avatar"] as string;
         public static bool IsLoggedIn => !string.IsNullOrEmpty(CurrentToken);
+
+        public static void SaveSession(string token, string username, string avatar = null)
+        {
+            if (!string.IsNullOrEmpty(token)) localSettings.Values["token"] = token;
+            if (!string.IsNullOrEmpty(username)) localSettings.Values["username"] = username;
+
+            if (!string.IsNullOrEmpty(avatar))
+            {
+                localSettings.Values["avatar"] = avatar;
+            }
+            else
+            {
+                localSettings.Values.Remove("avatar");
+            }
+        }
 
         public static void Logout()
         {
             localSettings.Values.Remove("token");
             localSettings.Values.Remove("username");
+            localSettings.Values.Remove("avatar");
         }
+
+        #endregion
+
+        #region Discord OAuth2 Authentication
+
+        /// <summary>
+        /// Launches the modern system default browser to bypass Trident/IE11 script crashes in WebAuthenticationBroker.
+        /// </summary>
+        public static async Task<bool> LoginWithDiscordAsync(string appProtocol = "prismstore")
+        {
+            try
+            {
+                Uri authUri = new Uri($"{BaseApiUrl}/discord?origin=https://gdcr.dankassassin368.com&app_protocol={Uri.EscapeDataString(appProtocol)}");
+                bool launched = await Launcher.LaunchUriAsync(authUri);
+
+                if (launched)
+                {
+                    Debug.WriteLine("Discord OAuth: System browser launched successfully.");
+                }
+                else
+                {
+                    Debug.WriteLine("Discord OAuth: Failed to launch system browser.");
+                }
+
+                return launched;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Discord OAuth Exception: " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Direct exchange for authorization codes via the POST /discord/token native endpoint.
+        /// </summary>
+        public static async Task<string> ExchangeDiscordTokenAsync(string code, string redirectUri = null)
+        {
+            try
+            {
+                var payload = new
+                {
+                    code,
+                    redirect_uri = redirectUri
+                };
+
+                string json = JsonConvert.SerializeObject(payload);
+                var content = new HttpStringContent(
+                    json,
+                    Windows.Storage.Streams.UnicodeEncoding.Utf8,
+                    "application/json"
+                );
+
+                var response = await client.PostAsync(new Uri($"{BaseApiUrl}/discord/token"), content);
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = JObject.Parse(result);
+                    string token = data["token"]?.Value<string>();
+                    string username = data["user"]?["username"]?.Value<string>();
+                    string avatar = data["user"]?["avatar"]?.Value<string>();
+
+                    SaveSession(token, username, avatar);
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("ExchangeDiscordToken ERROR: " + ex.Message);
+                return "{ \"error\": \"Discord token exchange failed\" }";
+            }
+        }
+
+        #endregion
+
+        #region Live Profile Hydration (/me)
+
+        /// <summary>
+        /// Fetches the live database profile using the current JWT and updates local storage.
+        /// </summary>
+        public static async Task<bool> SyncProfileAsync()
+        {
+            string token = CurrentToken;
+            if (string.IsNullOrEmpty(token)) return false;
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{BaseApiUrl}/me"));
+                request.Headers.Authorization = new HttpCredentialsHeaderValue("Bearer", token);
+
+                var response = await client.SendRequestAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var profile = JObject.Parse(json);
+
+                    string username = profile["username"]?.Value<string>();
+                    string avatar = profile["avatar"]?.Value<string>();
+
+                    if (!string.IsNullOrEmpty(username)) localSettings.Values["username"] = username;
+                    if (!string.IsNullOrEmpty(avatar)) localSettings.Values["avatar"] = avatar;
+                    else localSettings.Values.Remove("avatar");
+
+                    return true;
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    Logout();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("SyncProfile ERROR: " + ex.Message);
+            }
+
+            return false;
+        }
+
+        public static async Task<int> GetUserReviewCountAsync()
+        {
+            string token = CurrentToken;
+            if (string.IsNullOrEmpty(token)) return 0;
+
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, new Uri($"{BaseApiUrl}/me"));
+                request.Headers.Authorization = new HttpCredentialsHeaderValue("Bearer", token);
+
+                var response = await client.SendRequestAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    var profile = JObject.Parse(json);
+
+                    return profile["stats"]?["reviews"]?.Value<int>() ?? 0;
+                }
+                else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    Logout();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("GetUserReviewCountAsync ERROR: " + ex.Message);
+            }
+
+            return 0;
+        }
+
+        #endregion
+
+        #region Traditional Auth
 
         public static async Task<string> Login(string username, string password)
         {
@@ -39,11 +218,23 @@ namespace PrismStore.Services
                 );
 
                 var response = await client.PostAsync(
-                    new Uri("https://gdcr.dankassassin368.com/ns-status/auth/login"),
+                    new Uri($"{BaseApiUrl}/login"),
                     content
                 );
 
-                return await response.Content.ReadAsStringAsync();
+                string result = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = JObject.Parse(result);
+                    string token = data["token"]?.Value<string>();
+                    string returnedUser = data["username"]?.Value<string>() ?? username;
+                    string avatar = data["avatar"]?.Value<string>();
+
+                    SaveSession(token, returnedUser, avatar);
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
@@ -66,7 +257,7 @@ namespace PrismStore.Services
                 );
 
                 var response = await client.PostAsync(
-                    new Uri("https://gdcr.dankassassin368.com/ns-status/auth/register"),
+                    new Uri($"{BaseApiUrl}/register"),
                     content
                 );
 
@@ -78,6 +269,10 @@ namespace PrismStore.Services
                 return "{ \"error\": \"Register failed\" }";
             }
         }
+
+        #endregion
+
+        #region JWT Expiration & Countdown Methods
 
         public static string GetFormattedRemainingTokenTime()
         {
@@ -153,16 +348,32 @@ namespace PrismStore.Services
             {
                 Logout();
 
-                var dialog = new MessageDialog(
-                    "Your session has expired. Please sign in again to continue.",
-                    "Session Expired"
-                );
-                await dialog.ShowAsync();
+                if (Window.Current?.Content != null)
+                {
+                    var dialog = new ContentDialog
+                    {
+                        Title = "Session Expired",
+                        Content = new TextBlock
+                        {
+                            Text = "Your session has expired. Please sign in again to continue.",
+                            TextWrapping = TextWrapping.Wrap
+                        }
+                    };
+
+                    if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.ContentDialog", "CloseButtonText"))
+                        dialog.CloseButtonText = "OK";
+                    else
+                        dialog.PrimaryButtonText = "OK";
+
+                    await dialog.ShowAsync();
+                }
 
                 return true;
             }
 
             return false;
         }
+
+        #endregion
     }
 }

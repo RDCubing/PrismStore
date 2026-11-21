@@ -11,6 +11,9 @@ using Windows.UI.Popups;
 using Windows.Web.Http;
 using Newtonsoft.Json;
 using PrismStore.Models;
+using Windows.Foundation.Metadata;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace PrismStore.Services
 {
@@ -69,21 +72,34 @@ namespace PrismStore.Services
 
         public static async Task ShowUpdateDialogAsync(UpdateInfo update)
         {
+            if (Window.Current?.Content == null)
+                return;
+
             string message = $"{update.Message}\n\nVersion: {update.Version}";
             if (!string.IsNullOrWhiteSpace(update.Changelog))
             {
                 message += $"\n\nWhat's New:\n{update.Changelog}";
             }
 
-            MessageDialog dialog = new MessageDialog(message, update.Name ?? "Update Available");
-            dialog.Commands.Add(new UICommand("Update"));
-            dialog.Commands.Add(new UICommand("Later"));
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 1;
+            var dialog = new ContentDialog
+            {
+                Title = update.Name ?? "Update Available",
+                Content = new TextBlock
+                {
+                    Text = message,
+                    TextWrapping = TextWrapping.Wrap
+                },
+                PrimaryButtonText = "Update"
+            };
+
+            if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.ContentDialog", "CloseButtonText"))
+                dialog.CloseButtonText = "Later";
+            else
+                dialog.SecondaryButtonText = "Later";
 
             var result = await dialog.ShowAsync();
 
-            if (result != null && result.Label == "Update")
+            if (result == ContentDialogResult.Primary)
             {
                 await DownloadAndInstallUpdateAsync(update);
             }
@@ -117,8 +133,7 @@ namespace PrismStore.Services
                 if (file == null)
                     return;
 
-                // ✅ Notification: download started
-                ToastService.Show("Download started", update.Name ?? "Prism Store Update", "ms-appx:///Assets/PrismStore.png");
+                ToastService.Show("Download started", update.Name ?? "PrismStore Update", "ms-appx:///Assets/PrismStore.png");
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -126,25 +141,56 @@ namespace PrismStore.Services
                     await FileIO.WriteBufferAsync(file, buffer);
                 }
 
-                // ✅ Notification: download completed
-                ToastService.Show("Download complete", update.Name ?? "Prism Store Update", "ms-appx:///Assets/PrismStore.png");
+                ToastService.Show("Download complete", update.Name ?? "PrismStore Update", "ms-appx:///Assets/PrismStore.png");
 
-                MessageDialog installDialog = new MessageDialog(
-                    $"\"{file.Name}\" has downloaded successfully. Launch package installer now?",
-                    "Update Ready");
-
-                installDialog.Commands.Add(new UICommand("Install", async _ =>
+                if (Window.Current?.Content != null)
                 {
-                    await Launcher.LaunchFileAsync(file);
-                }));
-                installDialog.Commands.Add(new UICommand("Later"));
+                    var installDialog = new ContentDialog
+                    {
+                        Title = "Update Ready",
+                        Content = new TextBlock
+                        {
+                            Text = $"\"{file.Name}\" has downloaded successfully. Launch package installer now?",
+                            TextWrapping = TextWrapping.Wrap
+                        },
+                        PrimaryButtonText = "Install"
+                    };
 
-                await installDialog.ShowAsync();
+                    if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.ContentDialog", "CloseButtonText"))
+                        installDialog.CloseButtonText = "Later";
+                    else
+                        installDialog.SecondaryButtonText = "Later";
+
+                    var result = await installDialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        await Launcher.LaunchFileAsync(file);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 ToastService.Show("Download Failed", ex.Message);
-                await new MessageDialog(ex.Message, "Update Installation Error").ShowAsync();
+
+                if (Window.Current?.Content != null)
+                {
+                    var errorDialog = new ContentDialog
+                    {
+                        Title = "Update Installation Error",
+                        Content = new TextBlock
+                        {
+                            Text = ex.Message,
+                            TextWrapping = TextWrapping.Wrap
+                        }
+                    };
+
+                    if (ApiInformation.IsPropertyPresent("Windows.UI.Xaml.Controls.ContentDialog", "CloseButtonText"))
+                        errorDialog.CloseButtonText = "OK";
+                    else
+                        errorDialog.PrimaryButtonText = "OK";
+
+                    await errorDialog.ShowAsync();
+                }
             }
         }
     }

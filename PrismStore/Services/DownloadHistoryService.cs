@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Newtonsoft.Json;
@@ -17,14 +18,37 @@ namespace PrismStore.Services
 
         private const string FileName = "downloads.json";
 
-        // Add item, update badge count, and save to storage
+        // Add item without duplicates, update badge count, and persist
         public async void Add(DownloadItem item)
         {
+            if (item == null) return;
+
+            var existing = Downloads.FirstOrDefault(d =>
+                (!string.IsNullOrEmpty(item.DownloadUrl) && string.Equals(d.DownloadUrl, item.DownloadUrl, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrEmpty(item.FileName) && string.Equals(d.FileName, item.FileName, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrEmpty(item.Title) && string.Equals(d.Title, item.Title, StringComparison.OrdinalIgnoreCase)));
+
+            if (existing != null)
+            {
+                Downloads.Remove(existing);
+            }
+
             Downloads.Insert(0, item);
             await SaveAsync();
         }
 
-        // Clear all items, reset badge, and save state
+        // Remove a single item, update badge count, and persist
+        public async void Remove(DownloadItem item)
+        {
+            if (item == null) return;
+
+            if (Downloads.Remove(item))
+            {
+                await SaveAsync();
+            }
+        }
+
+        // Clear all items, reset badge count, and persist
         public async void Clear()
         {
             Downloads.Clear();
@@ -48,7 +72,7 @@ namespace PrismStore.Services
             }
         }
 
-        // Load download collection from local storage
+        // Load download collection from local storage with deduplication
         public async Task LoadAsync()
         {
             try
@@ -62,13 +86,24 @@ namespace PrismStore.Services
 
                 if (items != null)
                 {
+                    var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                     foreach (var item in items)
-                        Downloads.Add(item);
+                    {
+                        string key = !string.IsNullOrEmpty(item.DownloadUrl)
+                            ? item.DownloadUrl
+                            : item.FileName ?? item.Title;
+
+                        if (!string.IsNullOrEmpty(key) && seen.Add(key))
+                        {
+                            Downloads.Add(item);
+                        }
+                    }
                 }
             }
             catch
             {
-                // File does not exist on first run
+                // First run: file does not exist yet
             }
         }
     }

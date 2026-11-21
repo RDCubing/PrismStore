@@ -10,6 +10,7 @@ namespace PrismStore.Models
     {
         public string Title { get; set; }
         public string Id { get; set; }
+        public string packageId { get; set; }
         public string Category { get; set; }
         public string Subtitle { get; set; }
         public string Publisher { get; set; }

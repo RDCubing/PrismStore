@@ -41,44 +41,55 @@ namespace PrismStore.Services
                         return;
                     }
 
-                    // Dispatch to UI Thread for ObservableCollection updates
-                    await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                        CoreDispatcherPriority.Normal,
-                        () =>
-                        {
-                            PrismStore.Clear();
-                            NeonStore.Clear();
-                            TopApps.Clear();
-                            OtherApps.Clear();
-                            Categories.Clear();
+                    // Safely dispatch to UI Thread only if a UI window exists
+                    var coreWindow = CoreApplication.MainView?.CoreWindow;
+                    if (coreWindow != null && coreWindow.Dispatcher != null)
+                    {
+                        await coreWindow.Dispatcher.RunAsync(
+                            CoreDispatcherPriority.Normal,
+                            () => PopulateCollections(data));
+                    }
+                    else
+                    {
+                        // Running headless during StartupTask activation (no UI window created)
+                        PopulateCollections(data);
+                    }
 
-                            // Load PrismStore Apps (Windows 10)
-                            if (data.PrismStore != null)
-                            {
-                                foreach (var app in data.PrismStore)
-                                {
-                                    PrismStore.Add(app);
-                                    ProcessAppMetadata(app);
-                                }
-                            }
-
-                            // Load NeonStore Apps (Windows 8.1)
-                            if (data.NeonStore != null)
-                            {
-                                foreach (var app in data.NeonStore)
-                                {
-                                    NeonStore.Add(app);
-                                    ProcessAppMetadata(app);
-                                }
-                            }
-
-                            Debug.WriteLine("PrismStoreService: Load Completed Successfully ✔");
-                        });
+                    Debug.WriteLine("PrismStoreService: Load Completed Successfully ✔");
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("PrismStoreService ERROR: " + ex.Message);
+            }
+        }
+
+        private static void PopulateCollections(RootObject data)
+        {
+            PrismStore.Clear();
+            NeonStore.Clear();
+            TopApps.Clear();
+            OtherApps.Clear();
+            Categories.Clear();
+
+            // Load PrismStore Apps (Windows 10)
+            if (data.PrismStore != null)
+            {
+                foreach (var app in data.PrismStore)
+                {
+                    PrismStore.Add(app);
+                    ProcessAppMetadata(app);
+                }
+            }
+
+            // Load NeonStore Apps (Windows 8.1)
+            if (data.NeonStore != null)
+            {
+                foreach (var app in data.NeonStore)
+                {
+                    NeonStore.Add(app);
+                    ProcessAppMetadata(app);
+                }
             }
         }
 
